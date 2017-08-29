@@ -1,0 +1,28 @@
+//DO NOT MODIFY
+//This file is for who want to use ParsecResourceError as error layout.
+//But the structure here is only a reminder for user. It will not be parsed by Parsec.
+//Change this file will not affect the implementation of ParsecResourceError.
+//If you want to change the error layout of api end point, you can customize your own error layout class.
+
+type ParsecErrorDetail Struct {
+    String message;
+    String invalidValue;
+}
+
+// Parsec error response entity object
+type ParsecErrorBody Struct {
+  // error code
+  int32 code;
+
+  // error message
+  String message;
+
+  // error detail
+  array<ParsecErrorDetail> detail;
+}
+
+// This error model is designed for following EC REST API Convention (yo/ecrest)
+type ParsecResourceError Struct {
+  // error object
+  ParsecErrorBody error;
+}

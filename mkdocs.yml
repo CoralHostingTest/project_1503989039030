@@ -1,0 +1,17 @@
+site_name: Test Project
+pages:
+    - "Getting Started": index.md
+    - "Examples": examples.md
+    - "API":
+        - "Spec":
+            - "apex": apex.md
+            - "Swagger UI": apex_reserved_swaggerui.md
+        - "Sample Requests & Responses": api/req_n_resp.md
+        - "Error Codes": api/error.md
+    - "FAQ": faq.md
+theme: readthedocs
+theme_dir: theme
+markdown_extensions:
+    - admonition
+    - def_list
+    - grid_tables

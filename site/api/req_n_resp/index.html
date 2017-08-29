@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Sample Requests & Responses - Test Project</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Sample Requests & Responses";
+    var mkdocs_page_input_path = "api/req_n_resp.md";
+    var mkdocs_page_url = "/api/req_n_resp/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Test Project</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../..">Getting Started</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../examples/">Examples</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>API</span></li>
+
+        
+            
+    <ul class="subnav">
+    <li><span>Spec</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../apex/">apex</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../../apex_reserved_swaggerui/">Swagger UI</a>
+        
+    </li>
+
+        
+    </ul>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Sample Requests & Responses</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#post-projects">POST /projects/</a></li>
+                
+                    <li><a class="toctree-l4" href="#request">Request</a></li>
+                
+                    <li><a class="toctree-l4" href="#responses">Responses</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#put-projectsid">PUT /projects/{id}</a></li>
+                
+                    <li><a class="toctree-l4" href="#request_1">Request</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#delete-projectsid">DELETE /projects/{id}</a></li>
+                
+                    <li><a class="toctree-l4" href="#responses_2">Responses</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#get-projectsid">GET /projects/{id}</a></li>
+                
+                    <li><a class="toctree-l4" href="#responses_3">Responses</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#get-projects">GET /projects</a></li>
+                
+                    <li><a class="toctree-l4" href="#responses_4">Responses</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#post-projectsidsync">POST /projects/{id}/sync</a></li>
+                
+                    <li><a class="toctree-l4" href="#responses_5">Responses</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#post-projectsidhookcallback">POST /projects/{id}/hookCallback</a></li>
+                
+                    <li><a class="toctree-l4" href="#request_2">Request</a></li>
+                
+                    <li><a class="toctree-l4" href="#response">Response</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#error-responses">Error Responses</a></li>
+                
+                    <li><a class="toctree-l4" href="#status-400">status 400</a></li>
+                
+                    <li><a class="toctree-l4" href="#status-401">status 401</a></li>
+                
+                    <li><a class="toctree-l4" href="#status-403">status 403</a></li>
+                
+                    <li><a class="toctree-l4" href="#status-404">status 404</a></li>
+                
+                    <li><a class="toctree-l4" href="#status-409">status 409</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../error/">Error Codes</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../faq/">FAQ</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Test Project</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>API &raquo;</li>
+        
+      
+    
+    <li>Sample Requests & Responses</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>For API Spec, please refer to <a href="../../apex/">API Spec</a></p>
+<h2 id="post-projects">POST /projects/</h2>
+<h3 id="request">Request</h3>
+<pre><code class="json">{
+    &quot;name&quot;: &quot;Apex - The API Portal&quot;,
+    &quot;description&quot;:&quot;Apex contains a set of guidelines, libraries and a protoal website. see https://yo/apex for details.&quot;, 
+    &quot;repoUrl&quot;:&quot;git@git.corp.yahoo.com:apex/api.git#dogfood&quot;,
+    &quot;custodian&quot;:&quot;ec-lightyear-dev@yahoo-inc.com&quot;,
+    &quot;isOpenApi&quot; : true
+}
+</code></pre>
+
+<h3 id="responses">Responses</h3>
+<h4 id="status-202">status 202</h4>
+<pre><code class="json">{
+    &quot;createdTs&quot;: &quot;2017-03-28T09:00:14.135Z&quot;,
+    &quot;custodian&quot;: &quot;dev-projcreateSuccess@yahoo-inc.com&quot;,
+    &quot;description&quot;: &quot;Description: createSuccess&quot;,
+    &quot;docUrl&quot;: &quot;https://git.corp.yahoo.com/pages/ApexHosting/Projec-createSuccess&quot;,
+    &quot;id&quot;: &quot;111&quot;,
+    &quot;name&quot;: &quot;Name: createSuccess&quot;,
+    &quot;repoBranch&quot;: &quot;devBranch&quot;,
+    &quot;repoName&quot;: &quot;TestRepo_createSuccess&quot;,
+    &quot;repoOrg&quot;: &quot;TestOrg&quot;,
+    &quot;repoUrl&quot;: &quot;git@git.corp.yahoo.com:TestOrg/TestRepo_createSuccess.git#devBranch&quot;,
+    &quot;updateTs&quot;: &quot;2017-03-28T09:00:14.135Z&quot;,
+    &quot;webHookId&quot;: 0,
+    &quot;isOpenApi&quot; : true
+}
+</code></pre>
+
+<h2 id="put-projectsid">PUT /projects/{id}</h2>
+<h3 id="request_1">Request</h3>
+<pre><code class="json">{
+    &quot;name&quot;: &quot;Apex - The API Portal&quot;,
+    &quot;description&quot;:&quot;Apex contains a set of guidelines, libraries and a protoal website. see https://yo/apex for details.&quot;, 
+    &quot;repoUrl&quot;:&quot;git@git.corp.yahoo.com:apex/api.git#dogfood&quot;,
+    &quot;custodian&quot;:&quot;ec-lightyear-dev@yahoo-inc.com&quot;
+}
+</code></pre>
+
+<h4 id="responses_1">Responses</h4>
+<h4 id="status-200">status 200</h4>
+<pre><code class="json">{
+    &quot;createdTs&quot;: &quot;2017-03-28T09:19:01.855Z&quot;,
+     &quot;custodian&quot;: &quot;dev-projupdateSuccess@yahoo-inc.com&quot;,
+     &quot;description&quot;: &quot;Description: updateSuccess&quot;,
+     &quot;docUrl&quot;: &quot;https://git.corp.yahoo.com/pages/ApexHosting/Projec-updateSuccess&quot;,
+     &quot;id&quot;: &quot;updateSuccess&quot;,
+     &quot;name&quot;: &quot;Name: updateSuccess&quot;,
+     &quot;repoBranch&quot;: &quot;devBranch&quot;,
+     &quot;repoName&quot;: &quot;TestRepo_updateSuccess&quot;,
+     &quot;repoOrg&quot;: &quot;TestOrg&quot;,
+     &quot;repoUrl&quot;: &quot;git@git.corp.yahoo.com:TestOrg/TestRepo_updateSuccess.git#devBranch&quot;,
+     &quot;updateTs&quot;: &quot;2017-03-28T09:19:01.855Z&quot;,
+     &quot;webHookId&quot;: 0,
+     &quot;isOpenApi&quot; : true
+}
+</code></pre>
+
+<h2 id="delete-projectsid">DELETE /projects/{id}</h2>
+<h3 id="responses_2">Responses</h3>
+<h4 id="status-204">status 204</h4>
+<p>NULL</p>
+<h2 id="get-projectsid">GET /projects/{id}</h2>
+<h3 id="responses_3">Responses</h3>
+<h4 id="status-200_1">status 200</h4>
+<pre><code class="json">{
+    &quot;createdTs&quot;: &quot;2017-04-07T02:19:32.01Z&quot;,
+    &quot;custodian&quot;: &quot;dev-projgetSuccess@yahoo-inc.com&quot;,
+    &quot;description&quot;: &quot;Description: getSuccess&quot;,
+    &quot;docUrl&quot;: &quot;https://git.corp.yahoo.com/pages/ApexHosting/Projec-getSuccess&quot;,
+    &quot;id&quot;: 111,
+    &quot;name&quot;: &quot;Name: getSuccess&quot;,
+    &quot;repoBranch&quot;: &quot;devBranch&quot;,
+    &quot;repoName&quot;: &quot;TestRepo_getSuccess&quot;,
+    &quot;repoOrg&quot;: &quot;TestOrg&quot;,
+    &quot;repoUrl&quot;: &quot;git@git.corp.yahoo.com:TestOrg/TestRepo_getSuccess.git#devBranch&quot;,
+    &quot;updateTs&quot;: &quot;2017-04-07T02:19:32.01Z&quot;,
+    &quot;webHookId&quot;: 0,
+    &quot;isOpenApi&quot; : true
+}
+</code></pre>
+
+<h2 id="get-projects">GET /projects</h2>
+<h3 id="responses_4">Responses</h3>
+<pre><code class="json">{
+    &quot;projectResponseList&quot;: [{
+        &quot;createdTs&quot;: &quot;2017-03-28T09:19:01.423Z&quot;,
+        &quot;custodian&quot;: &quot;dev-projlist1@yahoo-inc.com&quot;,
+        &quot;description&quot;: &quot;Description: list1&quot;,
+        &quot;docUrl&quot;: &quot;https://git.corp.yahoo.com/pages/ApexHosting/Projec-list1&quot;,
+        &quot;id&quot;: 111,
+        &quot;name&quot;: &quot;Name: list1&quot;,
+        &quot;repoBranch&quot;: &quot;devBranch&quot;,
+        &quot;repoName&quot;: &quot;TestRepo_list1&quot;,
+        &quot;repoOrg&quot;: &quot;TestOrg&quot;,
+        &quot;repoUrl&quot;: &quot;git@git.corp.yahoo.com:TestOrg/TestRepo_list1.git#devBranch&quot;,
+        &quot;updateTs&quot;: &quot;2017-03-28T09:19:01.423Z&quot;,
+        &quot;webHookId&quot;: 0,
+        &quot;isOpenApi&quot; : true
+    }, {
+        &quot;createdTs&quot;: &quot;2017-03-28T09:19:01.423Z&quot;,
+        &quot;custodian&quot;: &quot;dev-projlist2@yahoo-inc.com&quot;,
+        &quot;description&quot;: &quot;Description: list2&quot;,
+        &quot;docUrl&quot;: &quot;https://git.corp.yahoo.com/pages/ApexHosting/Projec-list2&quot;,
+        &quot;id&quot;: 222,
+        &quot;name&quot;: &quot;Name: list2&quot;,
+        &quot;repoBranch&quot;: &quot;devBranch&quot;,
+        &quot;repoName&quot;: &quot;TestRepo_list2&quot;,
+        &quot;repoOrg&quot;: &quot;TestOrg&quot;,
+        &quot;repoUrl&quot;: &quot;git@git.corp.yahoo.com:TestOrg/TestRepo_list2.git#devBranch&quot;,
+        &quot;updateTs&quot;: &quot;2017-03-28T09:19:01.423Z&quot;,
+        &quot;webHookId&quot;: 0,
+        &quot;isOpenApi&quot; : false
+    }, {
+        &quot;createdTs&quot;: &quot;2017-03-28T09:19:01.423Z&quot;,
+        &quot;custodian&quot;: &quot;dev-projlist3@yahoo-inc.com&quot;,
+        &quot;description&quot;: &quot;Description: list3&quot;,
+        &quot;docUrl&quot;: &quot;https://git.corp.yahoo.com/pages/ApexHosting/Projec-list3&quot;,
+        &quot;id&quot;: 333,
+        &quot;name&quot;: &quot;Name: list3&quot;,
+        &quot;repoBranch&quot;: &quot;devBranch&quot;,
+        &quot;repoName&quot;: &quot;TestRepo_list3&quot;,
+        &quot;repoOrg&quot;: &quot;TestOrg&quot;,
+        &quot;repoUrl&quot;: &quot;git@git.corp.yahoo.com:TestOrg/TestRepo_list3.git#devBranch&quot;,
+        &quot;updateTs&quot;: &quot;2017-03-28T09:19:01.423Z&quot;,
+        &quot;webHookId&quot;: 0,
+        &quot;isOpenApi&quot; : false
+    }]
+}
+</code></pre>
+
+<h2 id="post-projectsidsync">POST /projects/{id}/sync</h2>
+<h3 id="responses_5">Responses</h3>
+<h4 id="status-204_1">status 204</h4>
+<p>NULL</p>
+<h2 id="post-projectsidhookcallback">POST /projects/{id}/hookCallback</h2>
+<h3 id="request_2">Request</h3>
+<pre><code class="json">{
+  &quot;ref&quot;:&quot;refs/heads/master&quot;,
+  &quot;after&quot;:&quot;c6ae2887c8dc6e466dd95f9788b56996cc83c55d&quot;
+}
+
+</code></pre>
+
+<h3 id="response">Response</h3>
+<h4 id="status-204_2">status 204</h4>
+<p>NULL</p>
+<h2 id="error-responses">Error Responses</h2>
+<p>Most of the error responses are in the following format, where <code>error.code</code> and <code>error.message</code> should provide some details on the root cause. 
+Please refer to <a href="../error/">Error Codes</a> for the complete list of error codes and possible remediation.</p>
+<pre><code class="json">{
+    &quot;error&quot;: {
+        &quot;code&quot;: 50001,
+        &quot;message&quot;: &quot;error message&quot;
+    }
+}
+</code></pre>
+
+<p>Below are some examples categorized by HTTP Status code: </p>
+<h4 id="status-400">status 400</h4>
+<pre><code class="json">{
+    &quot;error&quot;: {
+        &quot;code&quot;: 0,
+            &quot;detail&quot;: [{
+                &quot;type&quot;: &quot;validationError&quot;,
+                &quot;invalidValue&quot;: &quot;  &quot;,
+                &quot;message&quot;: &quot;must match \&quot;^[a-zA-Z0-9._%+-]+@yahoo-inc.com$\&quot;&quot;,
+                &quot;messageTemplate&quot;: &quot;{javax.validation.constraints.Pattern.message}&quot;,
+                &quot;path&quot;: &quot;ApexResources.createProject.creationRequest.custodian&quot;
+            }, {
+                &quot;type&quot;: &quot;validationError&quot;,
+                &quot;invalidValue&quot;: &quot;  &quot;,
+                &quot;message&quot;: &quot;must match \&quot;^.*\\S.*$\&quot;&quot;,
+                &quot;messageTemplate&quot;: &quot;{javax.validation.constraints.Pattern.message}&quot;,
+                &quot;path&quot;: &quot;ApexResources.createProject.creationRequest.name&quot;
+            }, {
+                &quot;type&quot;: &quot;validationError&quot;,
+                &quot;invalidValue&quot;: &quot;  &quot;,
+                &quot;message&quot;: &quot;must match \&quot;^.*\\S.*$\&quot;&quot;,
+                &quot;messageTemplate&quot;: &quot;{javax.validation.constraints.Pattern.message}&quot;,
+                &quot;path&quot;: &quot;ApexResources.createProject.creationRequest.description&quot;
+            }, {
+                &quot;type&quot;: &quot;validationError&quot;,
+                &quot;invalidValue&quot;: &quot;  &quot;,
+                &quot;message&quot;: &quot;must match \&quot;^.*\\S.*$\&quot;&quot;,
+                &quot;messageTemplate&quot;: &quot;{javax.validation.constraints.Pattern.message}&quot;,
+                &quot;path&quot;: &quot;ApexResources.createProject.creationRequest.repoUrl&quot;
+            }],
+            &quot;message&quot;: &quot;constraint violation validate error&quot;
+    }
+}
+</code></pre>
+
+<h4 id="status-401">status 401</h4>
+<p><em>TBD</em></p>
+<h4 id="status-403">status 403</h4>
+<p><em>TBD</em></p>
+<h4 id="status-404">status 404</h4>
+<pre><code class="json">{
+    &quot;error&quot;: {
+        &quot;code&quot;: 40400,
+        &quot;message&quot;: &quot;Unable to find project with the given id. [getFailNotFound]&quot;
+    }
+}
+</code></pre>
+
+<h3 id="status-409">status 409</h3>
+<pre><code class="json">{
+    &quot;error&quot;: {
+        &quot;code&quot;: 40901,
+        &quot;message&quot;: &quot;A project with the same repository url already exists.&quot;
+    }
+}
+</code></pre>
+
+<h4 id="status-500">status 500</h4>
+<pre><code class="json">{
+    &quot;error&quot;: {
+        &quot;code&quot;: 50001,
+        &quot;message&quot;: &quot;Unable to create project with the given repo. [git@git.corp.yahoo.com:TestOrg/TestRepo_333.git#devBranch]&quot;
+    }
+}
+
+</code></pre>
+              
+            </div>
+          </div>
+          <!--
+custom blank footer
+-->
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../../apex_reserved_swaggerui/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../error/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../../js/theme.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,997 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "The apex API",
+        "version": "1",
+        "description": "**APEX API** provides endpoints to onboard, update, delete a project and retrieve project(s) information. It also provides other operations to sync with github or receive github events. \u003cbr/\u003e \u003cbr/\u003e ***Terminology*** \u003cbr/\u003e * **Project**: A project is an API that is registered with APEX through the onboarding process. \u003cbr/\u003e"
+    },
+    "host": "sandbox.apex.corp.yahoo.com",
+    "basePath": "/api/apex/v1",
+    "schemes": [
+        "https"
+    ],
+    "paths": {
+        "/projects": {
+            "get": {
+                "tags": [
+                    "ProjectResponseList"
+                ],
+                "summary": "Get all projects. \u003cbr/\u003e Please refer to [Sample Request/Responses](/api/req_n_resp.md) sections for examples.",
+                "produces": [
+                    "application/json"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ProjectResponseList"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/": {
+            "post": {
+                "tags": [
+                    "ProjectResponse"
+                ],
+                "summary": "Get WSSID for an authentication in request's header \u003cbr/\u003e marked this following /wssids section because YBYCookieWSSIDIssuingServlet at DefaultWebListener has already added this following mapping /apex/v1/wssids resource ProjectResponseList GET \"/wssids\" { expected OK; exceptions { ResourceError INTERNAL_SERVER_ERROR; ResourceError BAD_REQUEST; ResourceError UNAUTHORIZED; } } Create/Onboard a project. \u003cbr/\u003e Please refer to  [Sample Request/Responses](/api/req_n_resp.md) sections for examples.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "creationRequest",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ProjectCreateRequest"
+                        },
+                        "description": "Required request parameter.",
+                        "required": true
+                    },
+                    {
+                        "name": "X-YahooWSSID-Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "Cookie",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "202": {
+                        "description": "Accepted",
+                        "schema": {
+                            "$ref": "#/definitions/ProjectResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{id}": {
+            "delete": {
+                "tags": [
+                    "NullResponse"
+                ],
+                "summary": "Delete the project with the given project id. \u003cbr/\u003e Please refer to [Sample Request/Responses](/api/req_n_resp.md) sections for examples.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "The id of the project to delete.",
+                        "required": true
+                    },
+                    {
+                        "name": "X-YahooWSSID-Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "Cookie",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "ProjectResponse"
+                ],
+                "summary": "Get the detail of the project with the given project id. \u003cbr/\u003e Please refer to [Sample Request/Responses](/api/req_n_resp.md) sections for examples.",
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "The id of the project to retrieve details.",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ProjectResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "ProjectResponse"
+                ],
+                "summary": "Edit/Modify a project. \u003cbr/\u003e Please refer to  [Sample Request/Responses](/api/req_n_resp.md) sections for examples.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "The id of the project to edit.",
+                        "required": true
+                    },
+                    {
+                        "name": "project",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/ProjectRequest"
+                        },
+                        "description": "The fields to edit.",
+                        "required": true
+                    },
+                    {
+                        "name": "X-YahooWSSID-Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "Cookie",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/ProjectResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{id}/hookCallback": {
+            "post": {
+                "tags": [
+                    "NullResponse"
+                ],
+                "summary": "For github Webhook callback \u003cbr/\u003e When the request is for the event type we can’t support. \u003cbr/\u003e Currently we only support `push`.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "The id of the project.",
+                        "required": true
+                    },
+                    {
+                        "name": "event",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PushEventRequest"
+                        },
+                        "description": "github webhook payload",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "501": {
+                        "description": "Not Implemented",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{id}/promotion": {
+            "post": {
+                "tags": [
+                    "NullResponse"
+                ],
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "format": "uuid",
+                        "required": true
+                    },
+                    {
+                        "name": "request",
+                        "in": "body",
+                        "schema": {
+                            "$ref": "#/definitions/PromotionCreateRequest"
+                        },
+                        "required": true
+                    },
+                    {
+                        "name": "X-YahooWSSID-Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "Cookie",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "403": {
+                        "description": "Forbidden",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    }
+                }
+            }
+        },
+        "/projects/{id}/sync": {
+            "post": {
+                "tags": [
+                    "NullResponse"
+                ],
+                "summary": "Force Apex to sync with the project data on git. \u003cbr/\u003e Please refer to [Sample Request/Responses](/api/req_n_resp.md) sections for examples.",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "type": "string",
+                        "format": "uuid",
+                        "description": "The id of the project.",
+                        "required": true
+                    },
+                    {
+                        "name": "X-YahooWSSID-Authorization",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "Cookie",
+                        "in": "header",
+                        "type": "string",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    }
+                }
+            }
+        },
+        "/search/": {
+            "get": {
+                "tags": [
+                    "SearchResponseList"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "parameters": [
+                    {
+                        "name": "q",
+                        "in": "query",
+                        "type": "string",
+                        "description": "query, separate by \",\" this naming follows http://yo/ecrest",
+                        "required": true
+                    },
+                    {
+                        "name": "sortBy",
+                        "in": "query",
+                        "type": "string",
+                        "description": "sort search responses, which allows: projectName: projectName ascending -projectName: projectName descending (no value): default sorting",
+                        "required": true
+                    },
+                    {
+                        "name": "limit",
+                        "in": "query",
+                        "type": "string",
+                        "description": "record limit in one response, default 10",
+                        "required": true
+                    },
+                    {
+                        "name": "offset",
+                        "in": "query",
+                        "type": "string",
+                        "description": "page offset, nullable, default 0",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/SearchResponseList"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/ResourceError"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "NullResponse": {
+            "description": "Represents response when there is no content."
+        },
+        "ParsecErrorBody": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "detail": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ParsecErrorDetail"
+                    }
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message"
+            ]
+        },
+        "ParsecErrorDetail": {
+            "properties": {
+                "invalidValue": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "message"
+            ]
+        },
+        "ParsecResourceError": {
+            "properties": {
+                "error": {
+                    "$ref": "#/definitions/ParsecErrorBody"
+                }
+            },
+            "required": [
+                "error"
+            ]
+        },
+        "ProjectCreateRequest": {
+            "properties": {
+                "isOpenApi": {
+                    "type": "boolean",
+                    "description": "Indicate this document will be published or not. It can't be changed on update request.",
+                    "example": false
+                }
+            },
+            "required": [
+                "isOpenApi"
+            ]
+        },
+        "ProjectRequest": {
+            "properties": {
+                "custodian": {
+                    "type": "string",
+                    "description": "The custodian/contact of the api, should be a `@yahoo-inc` address. An ilist is preferred.",
+                    "example": ""
+                },
+                "description": {
+                    "type": "string",
+                    "description": "Long description of the api.",
+                    "example": ""
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the api.",
+                    "example": ""
+                },
+                "repoUrl": {
+                    "type": "string",
+                    "description": "The ssh url to the repository where the RDL source and documents resides. \u003cbr/\u003e Should be in the format of `git@git.corp.yahoo.com:${orgname}/${reponame}.git#${branchName}`",
+                    "example": ""
+                }
+            },
+            "required": [
+                "repoUrl",
+                "name",
+                "custodian",
+                "description"
+            ],
+            "description": "The request parameter used in project onboarding/creation and update. \u003cbr/\u003e\u003cbr/\u003e - Each and every field are required for creation (not null), and can not be blank. \u003cbr/\u003e - The fields are allowed to be null on update but not blank. If the field value is null for update, the field will be kept unchanged. \u003cbr/\u003e - Please refer to  [Sample Request/Responses](/api/req_n_resp.md) sections for examples. \u003cbr/\u003e - **Implementation note**: Regex is used to verify the input is not blank and escape '\\\\' twice for rdl \u0026 java"
+        },
+        "ProjectResponse": {
+            "properties": {
+                "createdTs": {
+                    "type": "string",
+                    "description": "The date time when the project is created.",
+                    "example": ""
+                },
+                "custodian": {
+                    "type": "string",
+                    "description": "The custodian of the project. As specified on project creation.",
+                    "example": ""
+                },
+                "description": {
+                    "type": "string",
+                    "description": "The description of the project. As specified on project creation.",
+                    "example": ""
+                },
+                "docGeneratedTs": {
+                    "type": "string",
+                    "description": "The date time when the doc is generated.",
+                    "example": ""
+                },
+                "docUrl": {
+                    "type": "string",
+                    "description": "The url to the document-hosting page, ex: https://git.corp.yahoo.com/pages/ApexHosting/project_cat/",
+                    "example": ""
+                },
+                "id": {
+                    "type": "_UUID_",
+                    "description": "System generated unique id.",
+                    "example": ""
+                },
+                "isOpenApi": {
+                    "type": "boolean",
+                    "description": "Indicate this document will be published or not",
+                    "example": false
+                },
+                "message": {
+                    "type": "string",
+                    "description": "Error messages if encounters document generation error",
+                    "example": ""
+                },
+                "name": {
+                    "type": "string",
+                    "description": "The name of the project. As specified on project creation.",
+                    "example": ""
+                },
+                "repoBranch": {
+                    "type": "string",
+                    "description": "The branch of the project repository, specified in `repoUrl` on project creation.",
+                    "example": ""
+                },
+                "repoHeadSha": {
+                    "type": "string",
+                    "description": "The sha of the project repository.",
+                    "example": ""
+                },
+                "repoName": {
+                    "type": "string",
+                    "description": "The name of the project repository, specified in `repoUrl` on project creation.",
+                    "example": ""
+                },
+                "repoOrg": {
+                    "type": "string",
+                    "description": "The organization of the project repository, specified in `repoUrl` on project creation.",
+                    "example": ""
+                },
+                "repoUrl": {
+                    "type": "string",
+                    "description": "The repository of the project. As specified on project creation.",
+                    "example": ""
+                },
+                "reviewUrl": {
+                    "type": "string",
+                    "description": "The url to the api review jive page, ex: https://yahoo.jiveon.com/thread/17141, as specified in the project config file.",
+                    "example": ""
+                },
+                "splunkDashboardUrl": {
+                    "type": "string",
+                    "description": "The url to the api splunk dashboard, as specified in the project config file.",
+                    "example": ""
+                },
+                "status": {
+                    "type": "string",
+                    "description": "The status of the project.",
+                    "example": ""
+                },
+                "testHostUrl": {
+                    "type": "string",
+                    "description": "The test host url, as specified in the project config file.",
+                    "example": ""
+                },
+                "updateTs": {
+                    "type": "string",
+                    "description": "The date time when the project is updated.",
+                    "example": ""
+                },
+                "webHookId": {
+                    "type": "integer",
+                    "format": "int64",
+                    "example": 0
+                },
+                "yamasUrl": {
+                    "type": "string",
+                    "description": "The url to the yamas dashboard, as specified in the project config file.",
+                    "example": ""
+                }
+            },
+            "required": [
+                "id",
+                "name",
+                "custodian",
+                "description",
+                "repoUrl",
+                "repoOrg",
+                "repoName",
+                "repoBranch",
+                "repoHeadSha",
+                "docUrl",
+                "reviewUrl",
+                "splunkDashboardUrl",
+                "yamasUrl",
+                "testHostUrl",
+                "webHookId",
+                "status",
+                "message",
+                "docGeneratedTs",
+                "isOpenApi",
+                "createdTs",
+                "updateTs"
+            ],
+            "description": "The project response object used in GET operation"
+        },
+        "ProjectResponseList": {
+            "properties": {
+                "projects": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/ProjectResponse"
+                    }
+                }
+            },
+            "required": [
+                "projects"
+            ],
+            "description": "A collection of [ProjectResponse](#projectresponse)"
+        },
+        "PromotionCreateRequest": {
+            "properties": {
+                "cmrId": {
+                    "type": "_UUID_",
+                    "description": "the cmr id.",
+                    "example": ""
+                }
+            },
+            "required": [
+                "cmrId"
+            ]
+        },
+        "PushEventRequest": {
+            "properties": {
+                "after": {
+                    "type": "string",
+                    "description": "The latest sha",
+                    "example": ""
+                },
+                "ref": {
+                    "type": "string",
+                    "example": ""
+                },
+                "repository": {
+                    "description": "repository, need to get the default branch info",
+                    "$ref": "#/definitions/PushEventRequestRepoInfo"
+                }
+            },
+            "required": [
+                "ref",
+                "after",
+                "repository"
+            ],
+            "description": "Represents the github webhook payload. Currently we only need these 2 fields. \u003cbr/\u003e reference: https://developer.github.com/v3/activity/events/types/#pushevent"
+        },
+        "PushEventRequestRepoInfo": {
+            "properties": {
+                "default_branch": {
+                    "type": "string",
+                    "example": ""
+                }
+            },
+            "required": [
+                "default_branch"
+            ],
+            "description": "Used only in PushEventRequest reference: https://developer.github.com/v3/activity/events/types/#pushevent"
+        },
+        "ResourceError": {
+            "properties": {
+                "code": {
+                    "type": "integer",
+                    "format": "int32"
+                },
+                "message": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "code",
+                "message"
+            ]
+        },
+        "SearchResponse": {
+            "properties": {
+                "content": {
+                    "type": "string",
+                    "example": ""
+                },
+                "custodian": {
+                    "type": "string",
+                    "example": ""
+                },
+                "projectDescription": {
+                    "type": "string",
+                    "example": ""
+                },
+                "projectDocUrl": {
+                    "type": "string",
+                    "example": ""
+                },
+                "projectId": {
+                    "type": "string",
+                    "example": ""
+                },
+                "projectName": {
+                    "type": "string",
+                    "example": ""
+                },
+                "projectRepoUrl": {
+                    "type": "string",
+                    "example": ""
+                },
+                "sectionName": {
+                    "type": "string",
+                    "example": ""
+                },
+                "sectionUrl": {
+                    "type": "string",
+                    "example": ""
+                }
+            },
+            "required": [
+                "projectId",
+                "projectName",
+                "projectDescription",
+                "projectDocUrl",
+                "projectRepoUrl",
+                "sectionName",
+                "sectionUrl",
+                "content",
+                "custodian"
+            ]
+        },
+        "SearchResponseList": {
+            "properties": {
+                "nextOffset": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 0
+                },
+                "resultsTotal": {
+                    "type": "integer",
+                    "format": "int32",
+                    "example": 0
+                },
+                "searchResponses": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/SearchResponse"
+                    }
+                }
+            },
+            "required": [
+                "searchResponses",
+                "resultsTotal",
+                "nextOffset"
+            ]
+        }
+    }
+}

@@ -1,0 +1,469 @@
+{
+    "docs": [
+        {
+            "location": "/", 
+            "text": "Step 1 - Write your Documents\n\n\nThe most essential step is to write good-quality documents for your API and we believe excellent API documentation \nshould include \nAPI Specification\n and \nAuxiliary Documents\n. \n\n\nAPI Specification\n\n\nAPI specification should include the description of API end points, request parameters, responses and error codes. \n\n\n\n\nParsec\n-based APIs\n\n\nApex is capable of auto-generate API spec for APIs implemented with Parsec V2. Please comment your RDL files properly,\nas the comments will be used to describe the end points, fields... etc.\n\n\nIf your API is implemented with Parsec V1, please refer to \nthe V2 migration guide\n and complete the migration first.\n\n\n\n\n\n\nNon-Parsec-based APIs. \n\n\nAPI owners will need to write the API spec manually in \nMarkdown\n format.\n\n\n\n\n\n\n\n\nAuxiliary Documents\n\n\nExcellent API documents should provide more than API Specification. It should include overview, getting started guide, best practices, tutorials, etc. that help with using the API effectively. \n\n\nDocument Format and Source\n\n\nApex supports document source written in \nMarkdown\n. The document source should be placed in a directory somewhere in your project. \n\n\nBy default this directory is \ndocs\n under the project root (the top level of your project), and is \nconfigurable\n. Please refer to \nLayout\n section for more details on how to configure your documentation.\n\n\nLinking Documents\n\n\nApex preserves the layout of  document source files and allows you to interlink your documentation by using regular Markdown hyperlinks. When linking between pages use the relative path to the Markdown document you wish to link to. \n\n\nKeep in mind that \nAPI spec generated from RDL files\n will be placed under the \ntop level\n directory of the doucments. \n\n\nFor example, with the following file structure: \n\n\nProjectAwesome\n|__apex.conf\n|__docs/\n| |__getting_started.md\n| |__faq.md \n| |__api/\n|    |__error.md\n|    |__samples.md\n|__src/main/\n      |_rdl/\n        |__awesome.rdl  \n      |_java/     \n\n\n\n\n\n\n\n\nTo link to \nfaq.md\n from \ngetting_started.md\n:\n\n\nThis is how you link to [FAQ](faq.md) from md files in the same directory.\n\n\n\n\n\n\nTo link to \napi/error.md\n from \nawesome.rdl\n:\n\n\nThis is how you link to [Error Code Table](api/error.md) from the RDL file.\n \n\n\n\n\n\n\nTo link to the generated API spec  from \napi/samples.md\n:\n\n\nThis is how you link to the generated [API Spec](/awesome.md) from any other md file.\n\n\nor \n\n\nThis is how you link to the generated [API Spec](../awesome.md) with relatvie path.\n\n\n\n\n\n\nStep 2 - Create \napex.conf\n\n\nApex project configuration is in \ntypesafe\n format and should be named \napex.conf\n, located under the project root directory:\n\n\nProjectAwesome\n|__apex.conf\n|__docs/\n| |__getting_started.md\n| |__faq.md \n| |__api/\n|    |__error.md\n|    |__samples.md\n|__src/main/\n      |_rdl/\n        |__awesome.rdl  \n      |_java/         \n\n\n\n\nA sample config file looks like this:\n\n\nversion = 1\ndoc_src_path = \ndocs\n\nrdl_src_path = \nsrc/main/rdl\n\nlayout =  [\n           { title = \nGetting Started\n, source = \nindex.md\n },\n           { title = \nAPI Specification\n, source = %API_SPEC% },\n           { title = \nTutorial\n, source = [\n                { title = \n5 minute guide\n, source = tutorial/simple.md },\n                { title = \nAdvanced\n, source = tutorial/adv.md }\n               ]\n           },\n           { title = \nOther links\n, source = [\n                { title = \nCopyright\n, source = copyright.md },\n                { title = \nReview and Monitoring\n, source = %RELATED_LINKS% }\n               ]\n           }\n       ]\ntest_host_url = \nhttps://ccc-api1.cards.ec.tw1.yahoo.com:4443\n\nsplunk_dashboard_url = \nhttps://splunkv.nevec.yahoo.com:9999/en-US/app/search/awesome_api_dashboard\n\nreview_url =  \nhttps://yahoo.jiveon.com/thread/16705\n       \nproperty = \nnevec\n\nis_on_mh = true\nyms_main_tag = \nnevec.apex\n\n\n\n\n\n\n\n\n\n\n\nKey\n\n\nRequired\n\n\nType\n\n\nDescription\n\n\nDefault Value\n\n\n\n\n\n\n\n\n\n\nversion\n\n\nYes\n\n\ninteger\n\n\nThe value must be \n1\n.\n\n\nN/A\n\n\n\n\n\n\nlayout\n\n\nYes\n\n\nArray\n\n\nDefines which pages to build and how they appear in the document navigation. See \nLayout\n for details.\n\n\nN/A\n\n\n\n\n\n\ndoc_src_path\n\n\nNo\n\n\nstring\n\n\nSpecify the document source directory.\n\n\ndocs\n\n\n\n\n\n\nrdl_src_path\n\n\nNo\n\n\nstring\n\n\nFor parsec-based project to specify the RDL source file.\n\n\nsrc/main/rdl\n\n\n\n\n\n\ntest_host_url\n\n\nNo\n\n\nstring\n\n\nThe url to the test host/sandbox.\n\n\n-\n\n\n\n\n\n\nreview_url\n\n\nNo\n\n\nstring\n\n\nThe url to the jive post of API review. ex: \nhttps://yahoo.jiveon.com/thread/16705\n\n\n-\n\n\n\n\n\n\nsplunk_dashboard_url\n\n\nNo\n\n\nstring\n\n\nThe url to your API's splunk dashboard.\n\n\n-\n\n\n\n\n\n\nproperty\n\n\nNo\n\n\nstring\n\n\nThe property name, which should be aligned with opsdb. We currently support \nnevec\n and \nbilling\n. Please contact us (\nFAQ\n) if you don't see your property on the list.\n\n\n-\n\n\n\n\n\n\nis_on_mh\n\n\nNo\n\n\nboolean\n\n\nWhether your project is host on Manhattan or not.\n\n\n-\n\n\n\n\n\n\nyms_main_tag\n\n\nNo\n\n\nString\n\n\nThe hostgroup tag used for yamas, please contact your property PE for the value.\n\n\n-\n\n\n\n\n\n\n\n\nLayout Configuration\n\n\nlayout\n is the most important config element for apex onboarding configuration, as it defines which pages to build and how they appear in the documentation navigation.\n\n\nThe content of \nlayout\n is expected to be an array of \ntitle/source\n pairs. Each \ntitle/source\n pair represents one Markdown file and shown as a single document page in the generated documents. \n\n\nA simple layout configuration looks like this has two top level pages: \nIntroduction\n and \nGetting Started\n.\n\n\nlayout =  [\n              { title = \nIntroduction\n, source = index.md },              \n              { title = \nGetting Started\n, source = getting_started.md }\n          ]\n\n\n\n\n\nAnd the generated navigation looks like this:\n\n\n\n\n\n\n\n\n\n\nKey\n\n\nRequired\n\n\nType\n\n\nDescription\n\n\nDefault Value\n\n\n\n\n\n\n\n\n\n\ntitle\n\n\nYes\n\n\nstring\n\n\nSpecify the title shown on the navigation bar.\n\n\nN/A\n\n\n\n\n\n\nsource\n\n\nYes\n\n\nstring\n\n\nSpecify the path to the Markdown file. The path is relative to the document source root, as specified in \ndoc_src_path\n.\n\n\nN/A\n\n\n\n\n\n\n\n\nMultilevel documentation\n\n\nApex supports multilevel documentation so that you can group related pages together. For example:\n\n\nversion = 1\nlayout = [\n    { title = \nIntroduction\n, source = index.md },\n    { title = \nGetting Started\n, source = getting_started.md },\n    { title = \nAPI\n, source = [\n        { title = \nSpec\n, source = api/spec.md },\n        { title = \nSample Requests \n Responses\n, source = api/samples.md },\n        { title = \nError Codes\n, source = api/error.md }\n        ]\n    },\n    { title = \nFAQ\n, source = faq.md }\n]\n\n\n\n\nWith the configuration above  Apex will generate 4 top level sections: \nIntroduction\n, \nGetting Started\n, \nAPI\n and \nFAQ\n. Under \nAPI\n there are 3 other pages: \nSpec\n, \nSample Requests \n Responses\n and \nError Codes\n. \n\n\nindex.md\n\n\nThe \nindex.md\n is mandatory for each project and should be the first file in \nlayout\n configuration. Apex will generate one for you if none found.\n\n\nReserved Keywords\n\n\n%API_SPEC%\n\n\nAs mentioned in \nAPI Specification\n, Apex is capable of auto-generating API spec for those implemented with Parsec V2. (If you would like to preview the generated documents, please refer to this section \nGenerate Code and Markdown (MD) files\n) This keyword can be seen as the \"placeholder\" to tell Apex where to place the auto-generated api specification.\n\n\nUnder the hood Apex generates one Markdown for each RDL file and placed under the top level directory of generated documents and the file name would be same as the RDL file name but with \n.md\n prefix. ex: The API spec generated from \napex.rdl\n will be named \napex.md\n. If your project has multiple RDL files, Apex will generate multiple md files for you.\n\n\nFor example, with this \nexample\n and simple configuration below:\n\n\nlayout = [\n    { title = \nAPI Spec\n, source = %API_SPEC% },\n    { title = \nOthers\n, source = others.md }\n]\n\n\n\n\nApex generates the navigation bar like this:\n\n\n\n\nSwagger UI\n\n\nBesides API Specification doc, Apex also generates Swagger UI for you, as shown below: \n\n\n\nAnd the API host is the \ntest_host_url\n value specified in the \napex.conf\n file.\n\n\n\nHowever, since the swagger UI js file is not hosted on the same machine as the test host, you will need to enable and \nconfigure CORS filter in \nDefaultWebListener.java\n in order to make swagger ui works as expected:\n\n\nServletContext sc = sce.getServletContext();\n\n//Initialize the filter parameters \nFilterRegistration.Dynamic filter = sc.addFilter(\nCORS\n, CrossOriginFilter.class);\nfilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true, \n/*\n);\n\n//this is where the swaggerUi.js is hosted at this point.\nfilter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM,\n            \nhttps://git.corp.yahoo.com,https://apex.corp.yahoo.com\n);\n\n//determine the allowed methods and headers.\nfilter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, \nGET,PUT,POST,DELETE\n);\nfilter.setInitParameter(CrossOriginFilter.ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, \n*\n);\n\n\n\n\n%RELATED_LINKS%\n\n\nWith this keyword, APEX will generate a page with links to \nreview_url\n, \nsplunk_dashboard_url\n and yamas dashboard if configured. Please refer to the \nexample\n for details.\n\n\nYamas Dashboard\n\n\nApex takes \nproperty\n, \nis_on_mh\n and \nyms_main_tag\n values from \napex.conf\n and composite the yamas dashboard url for a project. \nBy default the dashboard shows overall generic information such as total qps/latency, http status code distribution for the entire api as a whole.\n\n\nHowever, the \ndashboard for Parsec-based APIs\n can show broken-down statistics by each end point. For example, the QPS and latency for GET /yca/cards/{guid} as shown below:\n\nexample URL\n\n\n\n\nStep 3 - Git Authorization\n\n\nApex requires owner privilege to your organization so it can fetch code, check permission and create webhooks on your repositories.\n\n\nPlease add Apex's headless account: \nby-apex\n to your organization and grant it \nowner\n permission.\n\n\n\n\n\n\n\nNote that currently Apex only supports \nOrganizational\n repositories as starting from Github Enterprise 2.0.0, collaborator of a Personal repositories can no longer add web hooks.  \n\n\nStep 4 - Submit repo URL on Apex Homepage\n\n\nGo to \nApex Website\n to finish the onboarding.\n\n\n\n\nAPI Name: the name of the API.   \n\n\nGit Repo URL: the ssh url to the repository where the RDL source and documents source located. \n\n\nCustodian: the email address of the custodian for this API. An ilist is preferred.\n\n\nDescription: the description of what your API serves for.\n\n\nIs Open Api: your api will be published to outsider or not.\n\n\n\n\n\n\nAnd Voil\u00e0! that's all you have to do to get on-board to Apex!", 
+            "title": "Getting Started"
+        }, 
+        {
+            "location": "/#step-1-write-your-documents", 
+            "text": "The most essential step is to write good-quality documents for your API and we believe excellent API documentation \nshould include  API Specification  and  Auxiliary Documents .", 
+            "title": "Step 1 - Write your Documents"
+        }, 
+        {
+            "location": "/#api-specification", 
+            "text": "API specification should include the description of API end points, request parameters, responses and error codes.    Parsec -based APIs  Apex is capable of auto-generate API spec for APIs implemented with Parsec V2. Please comment your RDL files properly,\nas the comments will be used to describe the end points, fields... etc.  If your API is implemented with Parsec V1, please refer to  the V2 migration guide  and complete the migration first.    Non-Parsec-based APIs.   API owners will need to write the API spec manually in  Markdown  format.", 
+            "title": "API Specification"
+        }, 
+        {
+            "location": "/#auxiliary-documents", 
+            "text": "Excellent API documents should provide more than API Specification. It should include overview, getting started guide, best practices, tutorials, etc. that help with using the API effectively.", 
+            "title": "Auxiliary Documents"
+        }, 
+        {
+            "location": "/#document-format-and-source", 
+            "text": "Apex supports document source written in  Markdown . The document source should be placed in a directory somewhere in your project.   By default this directory is  docs  under the project root (the top level of your project), and is  configurable . Please refer to  Layout  section for more details on how to configure your documentation.", 
+            "title": "Document Format and Source"
+        }, 
+        {
+            "location": "/#linking-documents", 
+            "text": "Apex preserves the layout of  document source files and allows you to interlink your documentation by using regular Markdown hyperlinks. When linking between pages use the relative path to the Markdown document you wish to link to.   Keep in mind that  API spec generated from RDL files  will be placed under the  top level  directory of the doucments.   For example, with the following file structure:   ProjectAwesome\n|__apex.conf\n|__docs/\n| |__getting_started.md\n| |__faq.md \n| |__api/\n|    |__error.md\n|    |__samples.md\n|__src/main/\n      |_rdl/\n        |__awesome.rdl  \n      |_java/         To link to  faq.md  from  getting_started.md :  This is how you link to [FAQ](faq.md) from md files in the same directory.    To link to  api/error.md  from  awesome.rdl :  This is how you link to [Error Code Table](api/error.md) from the RDL file.      To link to the generated API spec  from  api/samples.md :  This is how you link to the generated [API Spec](/awesome.md) from any other md file.  or   This is how you link to the generated [API Spec](../awesome.md) with relatvie path.", 
+            "title": "Linking Documents"
+        }, 
+        {
+            "location": "/#step-2-create-apexconf", 
+            "text": "Apex project configuration is in  typesafe  format and should be named  apex.conf , located under the project root directory:  ProjectAwesome\n|__apex.conf\n|__docs/\n| |__getting_started.md\n| |__faq.md \n| |__api/\n|    |__error.md\n|    |__samples.md\n|__src/main/\n      |_rdl/\n        |__awesome.rdl  \n      |_java/           A sample config file looks like this:  version = 1\ndoc_src_path =  docs \nrdl_src_path =  src/main/rdl \nlayout =  [\n           { title =  Getting Started , source =  index.md  },\n           { title =  API Specification , source = %API_SPEC% },\n           { title =  Tutorial , source = [\n                { title =  5 minute guide , source = tutorial/simple.md },\n                { title =  Advanced , source = tutorial/adv.md }\n               ]\n           },\n           { title =  Other links , source = [\n                { title =  Copyright , source = copyright.md },\n                { title =  Review and Monitoring , source = %RELATED_LINKS% }\n               ]\n           }\n       ]\ntest_host_url =  https://ccc-api1.cards.ec.tw1.yahoo.com:4443 \nsplunk_dashboard_url =  https://splunkv.nevec.yahoo.com:9999/en-US/app/search/awesome_api_dashboard \nreview_url =   https://yahoo.jiveon.com/thread/16705        \nproperty =  nevec \nis_on_mh = true\nyms_main_tag =  nevec.apex      Key  Required  Type  Description  Default Value      version  Yes  integer  The value must be  1 .  N/A    layout  Yes  Array  Defines which pages to build and how they appear in the document navigation. See  Layout  for details.  N/A    doc_src_path  No  string  Specify the document source directory.  docs    rdl_src_path  No  string  For parsec-based project to specify the RDL source file.  src/main/rdl    test_host_url  No  string  The url to the test host/sandbox.  -    review_url  No  string  The url to the jive post of API review. ex:  https://yahoo.jiveon.com/thread/16705  -    splunk_dashboard_url  No  string  The url to your API's splunk dashboard.  -    property  No  string  The property name, which should be aligned with opsdb. We currently support  nevec  and  billing . Please contact us ( FAQ ) if you don't see your property on the list.  -    is_on_mh  No  boolean  Whether your project is host on Manhattan or not.  -    yms_main_tag  No  String  The hostgroup tag used for yamas, please contact your property PE for the value.  -", 
+            "title": "Step 2 - Create apex.conf"
+        }, 
+        {
+            "location": "/#layout-configuration", 
+            "text": "layout  is the most important config element for apex onboarding configuration, as it defines which pages to build and how they appear in the documentation navigation.  The content of  layout  is expected to be an array of  title/source  pairs. Each  title/source  pair represents one Markdown file and shown as a single document page in the generated documents.   A simple layout configuration looks like this has two top level pages:  Introduction  and  Getting Started .  layout =  [\n              { title =  Introduction , source = index.md },              \n              { title =  Getting Started , source = getting_started.md }\n          ]  And the generated navigation looks like this:      Key  Required  Type  Description  Default Value      title  Yes  string  Specify the title shown on the navigation bar.  N/A    source  Yes  string  Specify the path to the Markdown file. The path is relative to the document source root, as specified in  doc_src_path .  N/A", 
+            "title": "Layout Configuration"
+        }, 
+        {
+            "location": "/#multilevel-documentation", 
+            "text": "Apex supports multilevel documentation so that you can group related pages together. For example:  version = 1\nlayout = [\n    { title =  Introduction , source = index.md },\n    { title =  Getting Started , source = getting_started.md },\n    { title =  API , source = [\n        { title =  Spec , source = api/spec.md },\n        { title =  Sample Requests   Responses , source = api/samples.md },\n        { title =  Error Codes , source = api/error.md }\n        ]\n    },\n    { title =  FAQ , source = faq.md }\n]  With the configuration above  Apex will generate 4 top level sections:  Introduction ,  Getting Started ,  API  and  FAQ . Under  API  there are 3 other pages:  Spec ,  Sample Requests   Responses  and  Error Codes .", 
+            "title": "Multilevel documentation"
+        }, 
+        {
+            "location": "/#indexmd", 
+            "text": "The  index.md  is mandatory for each project and should be the first file in  layout  configuration. Apex will generate one for you if none found.", 
+            "title": "index.md"
+        }, 
+        {
+            "location": "/#reserved-keywords", 
+            "text": "", 
+            "title": "Reserved Keywords"
+        }, 
+        {
+            "location": "/#api_spec", 
+            "text": "As mentioned in  API Specification , Apex is capable of auto-generating API spec for those implemented with Parsec V2. (If you would like to preview the generated documents, please refer to this section  Generate Code and Markdown (MD) files ) This keyword can be seen as the \"placeholder\" to tell Apex where to place the auto-generated api specification.  Under the hood Apex generates one Markdown for each RDL file and placed under the top level directory of generated documents and the file name would be same as the RDL file name but with  .md  prefix. ex: The API spec generated from  apex.rdl  will be named  apex.md . If your project has multiple RDL files, Apex will generate multiple md files for you.  For example, with this  example  and simple configuration below:  layout = [\n    { title =  API Spec , source = %API_SPEC% },\n    { title =  Others , source = others.md }\n]  Apex generates the navigation bar like this:", 
+            "title": "%API_SPEC%"
+        }, 
+        {
+            "location": "/#swagger-ui", 
+            "text": "Besides API Specification doc, Apex also generates Swagger UI for you, as shown below:   And the API host is the  test_host_url  value specified in the  apex.conf  file.  However, since the swagger UI js file is not hosted on the same machine as the test host, you will need to enable and \nconfigure CORS filter in  DefaultWebListener.java  in order to make swagger ui works as expected:  ServletContext sc = sce.getServletContext();\n\n//Initialize the filter parameters \nFilterRegistration.Dynamic filter = sc.addFilter( CORS , CrossOriginFilter.class);\nfilter.addMappingForUrlPatterns(EnumSet.allOf(DispatcherType.class), true,  /* );\n\n//this is where the swaggerUi.js is hosted at this point.\nfilter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM,\n             https://git.corp.yahoo.com,https://apex.corp.yahoo.com );\n\n//determine the allowed methods and headers.\nfilter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM,  GET,PUT,POST,DELETE );\nfilter.setInitParameter(CrossOriginFilter.ACCESS_CONTROL_ALLOW_ORIGIN_HEADER,  * );", 
+            "title": "Swagger UI"
+        }, 
+        {
+            "location": "/#related_links", 
+            "text": "With this keyword, APEX will generate a page with links to  review_url ,  splunk_dashboard_url  and yamas dashboard if configured. Please refer to the  example  for details.", 
+            "title": "%RELATED_LINKS%"
+        }, 
+        {
+            "location": "/#yamas-dashboard", 
+            "text": "Apex takes  property ,  is_on_mh  and  yms_main_tag  values from  apex.conf  and composite the yamas dashboard url for a project. \nBy default the dashboard shows overall generic information such as total qps/latency, http status code distribution for the entire api as a whole.  However, the  dashboard for Parsec-based APIs  can show broken-down statistics by each end point. For example, the QPS and latency for GET /yca/cards/{guid} as shown below: example URL", 
+            "title": "Yamas Dashboard"
+        }, 
+        {
+            "location": "/#step-3-git-authorization", 
+            "text": "Apex requires owner privilege to your organization so it can fetch code, check permission and create webhooks on your repositories.  Please add Apex's headless account:  by-apex  to your organization and grant it  owner  permission.    Note that currently Apex only supports  Organizational  repositories as starting from Github Enterprise 2.0.0, collaborator of a Personal repositories can no longer add web hooks.", 
+            "title": "Step 3 - Git Authorization"
+        }, 
+        {
+            "location": "/#step-4-submit-repo-url-on-apex-homepage", 
+            "text": "Go to  Apex Website  to finish the onboarding.   API Name: the name of the API.     Git Repo URL: the ssh url to the repository where the RDL source and documents source located.   Custodian: the email address of the custodian for this API. An ilist is preferred.  Description: the description of what your API serves for.  Is Open Api: your api will be published to outsider or not.    And Voil\u00e0! that's all you have to do to get on-board to Apex!", 
+            "title": "Step 4 - Submit repo URL on Apex Homepage"
+        }, 
+        {
+            "location": "/examples/", 
+            "text": "ApexDogFood\n\n\n\n\nsource\n\n\ndocs\n\n\n\n\nThis project is a typical parsec-based project, based on \napex/api\n with most source code removed for demonstration purpose.\n\n\nThis example shows how Apex handles:\n\n\n\n\nparsec-based projects\n\n\nprojects with default RDL and document source directory\n\n\nprojects with multi-level layout\n\n\nprojects using reserved keywords\n\n\ninter-doc linking between auxiliary documents and RDL generated specs.\n\n\n\n\nProstoreEWS\n\n\n\n\nsource\n\n\ndocs\n\n\n\n\nThis sample project demonstrates how to setup and configure a non-parsec-based project for Apex. This project is based on \nProstore_ews_component\n with most code removed for demonstration purpose. \n\n\nThis example shows how Apex handles:\n\n\n\n\nnon-parsec-based projects\n\n\nprojects using reserved keywords\n\n\nprojects with non-default document source directory\n\n\n\n\nMobilePayment\n\n\n\n\nsource\n\n\ndocs\n\n\n\n\nThis is another example for parsec-based project. It is based on \nec-payment/ec_mobile_payment_ws\n with most code removed for demonstration purpose.\n\n\nThis example shows how Apex handles:\n\n\n\n\nprojects with multiple RDL files\n\n\nprojects with non-default RDL source directory\n\n\nprojects with no docs directory\n\n\nprojects with no \nindex.md\n file. (Apex will create one for you, but you should really write one.)", 
+            "title": "Examples"
+        }, 
+        {
+            "location": "/examples/#apexdogfood", 
+            "text": "source  docs   This project is a typical parsec-based project, based on  apex/api  with most source code removed for demonstration purpose.  This example shows how Apex handles:   parsec-based projects  projects with default RDL and document source directory  projects with multi-level layout  projects using reserved keywords  inter-doc linking between auxiliary documents and RDL generated specs.", 
+            "title": "ApexDogFood"
+        }, 
+        {
+            "location": "/examples/#prostoreews", 
+            "text": "source  docs   This sample project demonstrates how to setup and configure a non-parsec-based project for Apex. This project is based on  Prostore_ews_component  with most code removed for demonstration purpose.   This example shows how Apex handles:   non-parsec-based projects  projects using reserved keywords  projects with non-default document source directory", 
+            "title": "ProstoreEWS"
+        }, 
+        {
+            "location": "/examples/#mobilepayment", 
+            "text": "source  docs   This is another example for parsec-based project. It is based on  ec-payment/ec_mobile_payment_ws  with most code removed for demonstration purpose.  This example shows how Apex handles:   projects with multiple RDL files  projects with non-default RDL source directory  projects with no docs directory  projects with no  index.md  file. (Apex will create one for you, but you should really write one.)", 
+            "title": "MobilePayment"
+        }, 
+        {
+            "location": "/apex/", 
+            "text": "The Apex API\n\n\nAPEX API\n provides endpoints to onboard, update, delete a project and\nretrieve project(s) information. It also provides other operations to sync\nwith github or receive github events. \n \n \nTerminology\n \n *\n\nProject\n: A project is an API that is registered with APEX through the\nonboarding process. \n\n\nThis API has the following attributes:\n\n\n\n\n\n\n\n\nAttribute\n\n\nValue\n\n\n\n\n\n\n\n\n\n\nnamespace\n\n\ncom.yahoo.apex.parsec\n\n\n\n\n\n\nversion\n\n\n1\n\n\n\n\n\n\n\n\nResources\n\n\nSearchResponseList\n\n\nGET /search/\n\n\nRequest parameters:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nSource\n\n\nOptions\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nquery\n\n\nString\n\n\nquery: q\n\n\n\n\nquery, separate by \",\" this naming follows http://yo/ecrest\n\n\n\n\n\n\nsortBy\n\n\nString\n\n\nquery: sortBy\n\n\n\n\nsort search responses, which allows: projectName: projectName ascending -projectName: projectName descending (no value): default sorting\n\n\n\n\n\n\nlimit\n\n\nString\n\n\nquery: limit\n\n\n\n\nrecord limit in one response, default 10\n\n\n\n\n\n\noffset\n\n\nString\n\n\nquery: offset\n\n\n\n\npage offset, nullable, default 0\n\n\n\n\n\n\n\n\nResponses:\n\n\nExpected:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\n\n\n\n\n\n\n\n\n200 OK\n\n\nSearchResponseList\n\n\n\n\n\n\n\n\nException:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\nComment\n\n\n\n\n\n\n\n\n\n\n400 Bad Request\n\n\nResourceError\n\n\n\n\n\n\n\n\n401 Unauthorized\n\n\nResourceError\n\n\n\n\n\n\n\n\n500 Internal Server Error\n\n\nResourceError\n\n\n\n\n\n\n\n\n\n\nProjectResponse\n\n\nPOST /projects/\n\n\nGet WSSID for an authentication in request's header \n marked this following\n/wssids section because YBYCookieWSSIDIssuingServlet at DefaultWebListener\nhas already added this following mapping /apex/v1/wssids resource\nProjectResponseList GET \"/wssids\" { expected OK; exceptions { ResourceError\nINTERNAL_SERVER_ERROR; ResourceError BAD_REQUEST; ResourceError UNAUTHORIZED;\n} } Create/Onboard a project. \n Please refer to  \nSample\nRequest/Responses\n sections for examples.\n\n\nRequest parameters:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nSource\n\n\nOptions\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\ncreationRequest\n\n\nProjectCreateRequest\n\n\nbody\n\n\n\n\nRequired request parameter.\n\n\n\n\n\n\nwssid\n\n\nString\n\n\nheader: X-YahooWSSID-Authorization\n\n\n\n\n\n\n\n\n\n\ncookie\n\n\nString\n\n\nheader: Cookie\n\n\n\n\n\n\n\n\n\n\n\n\nResponses:\n\n\nExpected:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\n\n\n\n\n\n\n\n\n202 Accepted\n\n\nProjectResponse\n\n\n\n\n\n\n\n\nException:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\nComment\n\n\n\n\n\n\n\n\n\n\n400 Bad Request\n\n\nResourceError\n\n\n\n\n\n\n\n\n401 Unauthorized\n\n\nResourceError\n\n\n\n\n\n\n\n\n403 Forbidden\n\n\nResourceError\n\n\n\n\n\n\n\n\n409 Conflict\n\n\nResourceError\n\n\n\n\n\n\n\n\n500 Internal Server Error\n\n\nResourceError\n\n\n\n\n\n\n\n\n\n\nPUT /projects/{id}\n\n\nEdit/Modify a project. \n Please refer to  \nSample\nRequest/Responses\n sections for examples.\n\n\nRequest parameters:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nSource\n\n\nOptions\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nid\n\n\nUUID\n\n\npath\n\n\n\n\nThe id of the project to edit.\n\n\n\n\n\n\nproject\n\n\nProjectRequest\n\n\nbody\n\n\n\n\nThe fields to edit.\n\n\n\n\n\n\nwssid\n\n\nString\n\n\nheader: X-YahooWSSID-Authorization\n\n\n\n\n\n\n\n\n\n\ncookie\n\n\nString\n\n\nheader: Cookie\n\n\n\n\n\n\n\n\n\n\n\n\nResponses:\n\n\nExpected:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\n\n\n\n\n\n\n\n\n200 OK\n\n\nProjectResponse\n\n\n\n\n\n\n\n\nException:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\nComment\n\n\n\n\n\n\n\n\n\n\n400 Bad Request\n\n\nResourceError\n\n\n\n\n\n\n\n\n401 Unauthorized\n\n\nResourceError\n\n\n\n\n\n\n\n\n403 Forbidden\n\n\nResourceError\n\n\n\n\n\n\n\n\n404 Not Found\n\n\nResourceError\n\n\n\n\n\n\n\n\n409 Conflict\n\n\nResourceError\n\n\n\n\n\n\n\n\n500 Internal Server Error\n\n\nResourceError\n\n\n\n\n\n\n\n\n\n\nGET /projects/{id}\n\n\nGet the detail of the project with the given project id. \n Please refer to\n\nSample Request/Responses\n sections for examples.\n\n\nRequest parameters:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nSource\n\n\nOptions\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nid\n\n\nUUID\n\n\npath\n\n\n\n\nThe id of the project to retrieve details.\n\n\n\n\n\n\n\n\nResponses:\n\n\nExpected:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\n\n\n\n\n\n\n\n\n200 OK\n\n\nProjectResponse\n\n\n\n\n\n\n\n\nException:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\nComment\n\n\n\n\n\n\n\n\n\n\n400 Bad Request\n\n\nResourceError\n\n\n\n\n\n\n\n\n401 Unauthorized\n\n\nResourceError\n\n\n\n\n\n\n\n\n404 Not Found\n\n\nResourceError\n\n\n\n\n\n\n\n\n500 Internal Server Error\n\n\nResourceError\n\n\n\n\n\n\n\n\n\n\nProjectResponseList\n\n\nGET /projects\n\n\nGet all projects. \n Please refer to \nSample\nRequest/Responses\n sections for examples.\n\n\nResponses:\n\n\nExpected:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\n\n\n\n\n\n\n\n\n200 OK\n\n\nProjectResponseList\n\n\n\n\n\n\n\n\nException:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\nComment\n\n\n\n\n\n\n\n\n\n\n400 Bad Request\n\n\nResourceError\n\n\n\n\n\n\n\n\n401 Unauthorized\n\n\nResourceError\n\n\n\n\n\n\n\n\n500 Internal Server Error\n\n\nResourceError\n\n\n\n\n\n\n\n\n\n\nNullResponse\n\n\nDELETE /projects/{id}\n\n\nDelete the project with the given project id. \n Please refer to \nSample\nRequest/Responses\n sections for examples.\n\n\nRequest parameters:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nSource\n\n\nOptions\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nid\n\n\nUUID\n\n\npath\n\n\n\n\nThe id of the project to delete.\n\n\n\n\n\n\nwssid\n\n\nString\n\n\nheader: X-YahooWSSID-Authorization\n\n\n\n\n\n\n\n\n\n\ncookie\n\n\nString\n\n\nheader: Cookie\n\n\n\n\n\n\n\n\n\n\n\n\nResponses:\n\n\nExpected:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\n\n\n\n\n\n\n\n\n204 No Content\n\n\n\n\n\n\n\n\n\n\nException:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\nComment\n\n\n\n\n\n\n\n\n\n\n400 Bad Request\n\n\nResourceError\n\n\n\n\n\n\n\n\n401 Unauthorized\n\n\nResourceError\n\n\n\n\n\n\n\n\n404 Not Found\n\n\nResourceError\n\n\n\n\n\n\n\n\n409 Conflict\n\n\nResourceError\n\n\n\n\n\n\n\n\n500 Internal Server Error\n\n\nResourceError\n\n\n\n\n\n\n\n\n\n\nPOST /projects/{id}/hookCallback\n\n\nFor github Webhook callback \n When the request is for the event type we\ncan\u2019t support. \n Currently we only support \npush\n.\n\n\nRequest parameters:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nSource\n\n\nOptions\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nid\n\n\nUUID\n\n\npath\n\n\n\n\nThe id of the project.\n\n\n\n\n\n\nevent\n\n\nPushEventRequest\n\n\nbody\n\n\n\n\ngithub webhook payload\n\n\n\n\n\n\n\n\nResponses:\n\n\nExpected:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\n\n\n\n\n\n\n\n\n204 No Content\n\n\n\n\n\n\n\n\n\n\nException:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\nComment\n\n\n\n\n\n\n\n\n\n\n401 Unauthorized\n\n\nResourceError\n\n\n\n\n\n\n\n\n404 Not Found\n\n\nResourceError\n\n\n\n\n\n\n\n\n409 Conflict\n\n\nResourceError\n\n\n\n\n\n\n\n\n500 Internal Server Error\n\n\nResourceError\n\n\n\n\n\n\n\n\n501 Not Implemented\n\n\nResourceError\n\n\n\n\n\n\n\n\n\n\nPOST /projects/{id}/sync\n\n\nForce Apex to sync with the project data on git. \n Please refer to \nSample\nRequest/Responses\n sections for examples.\n\n\nRequest parameters:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nSource\n\n\nOptions\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nid\n\n\nUUID\n\n\npath\n\n\n\n\nThe id of the project.\n\n\n\n\n\n\nwssid\n\n\nString\n\n\nheader: X-YahooWSSID-Authorization\n\n\n\n\n\n\n\n\n\n\ncookie\n\n\nString\n\n\nheader: Cookie\n\n\n\n\n\n\n\n\n\n\n\n\nResponses:\n\n\nExpected:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\n\n\n\n\n\n\n\n\n204 No Content\n\n\n\n\n\n\n\n\n\n\nException:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\nComment\n\n\n\n\n\n\n\n\n\n\n400 Bad Request\n\n\nResourceError\n\n\n\n\n\n\n\n\n401 Unauthorized\n\n\nResourceError\n\n\n\n\n\n\n\n\n404 Not Found\n\n\nResourceError\n\n\n\n\n\n\n\n\n409 Conflict\n\n\nResourceError\n\n\n\n\n\n\n\n\n500 Internal Server Error\n\n\nResourceError\n\n\n\n\n\n\n\n\n\n\nPOST /projects/{id}/promotion\n\n\nRequest parameters:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nSource\n\n\nOptions\n\n\nDescription\n\n\n\n\n\n\n\n\n\n\nid\n\n\nUUID\n\n\npath\n\n\n\n\n\n\n\n\n\n\nrequest\n\n\nPromotionCreateRequest\n\n\nbody\n\n\n\n\n\n\n\n\n\n\nwssid\n\n\nString\n\n\nheader: X-YahooWSSID-Authorization\n\n\n\n\n\n\n\n\n\n\ncookie\n\n\nString\n\n\nheader: Cookie\n\n\n\n\n\n\n\n\n\n\n\n\nResponses:\n\n\nExpected:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\n\n\n\n\n\n\n\n\n204 No Content\n\n\n\n\n\n\n\n\n\n\nException:\n\n\n\n\n\n\n\n\nCode\n\n\nType\n\n\nComment\n\n\n\n\n\n\n\n\n\n\n400 Bad Request\n\n\nResourceError\n\n\n\n\n\n\n\n\n401 Unauthorized\n\n\nResourceError\n\n\n\n\n\n\n\n\n403 Forbidden\n\n\nResourceError\n\n\n\n\n\n\n\n\n404 Not Found\n\n\nResourceError\n\n\n\n\n\n\n\n\n409 Conflict\n\n\nResourceError\n\n\n\n\n\n\n\n\n500 Internal Server Error\n\n\nResourceError\n\n\n\n\n\n\n\n\n\n\nTypes\n\n\n DateTime\n\n\nDateTime string that follows ISO 8601 UTC format, e.g.2013-03-06T11:00:00Z\n\n\nDateTime\n is a \nString\n type.\n\n\n ProjectRequest\n\n\nThe request parameter used in project onboarding/creation and update.\n\n - Each and every field are required for creation (not null), and\ncan not be blank. \n - The fields are allowed to be null on update but not\nblank. If the field value is null for update, the field will be kept\nunchanged. \n - Please refer to  \nSample\nRequest/Responses\n sections for examples. \n -\n\nImplementation note\n: Regex is used to verify the input is not blank and\nescape '\\' twice for rdl \n java\n\n\nProjectRequest\n is a \nStruct\n type with the following fields:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nOptions\n\n\nDescription\n\n\nNotes\n\n\n\n\n\n\n\n\n\n\nrepoUrl\n\n\nString\n\n\n\n\nThe ssh url to the repository where the RDL source and documents resides. \n Should be in the format of \ngit@git.corp.yahoo.com:${orgname}/${reponame}.git#${branchName}\n\n\n\n\n\n\n\n\nname\n\n\nString\n\n\n\n\nThe name of the api.\n\n\n\n\n\n\n\n\ncustodian\n\n\nString\n\n\n\n\nThe custodian/contact of the api, should be a \n@yahoo-inc\n address. An ilist is preferred.\n\n\n\n\n\n\n\n\ndescription\n\n\nString\n\n\n\n\nLong description of the api.\n\n\n\n\n\n\n\n\n\n\n ProjectCreateRequest\n\n\nProjectCreateRequest\n is a \nStruct\n type with the following fields:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nOptions\n\n\nDescription\n\n\nNotes\n\n\n\n\n\n\n\n\n\n\nrepoUrl\n\n\nString\n\n\n\n\nThe ssh url to the repository where the RDL source and documents resides. \n Should be in the format of \ngit@git.corp.yahoo.com:${orgname}/${reponame}.git#${branchName}\n\n\n[from \nProjectRequest\n]\n\n\n\n\n\n\nname\n\n\nString\n\n\n\n\nThe name of the api.\n\n\n[from \nProjectRequest\n]\n\n\n\n\n\n\ncustodian\n\n\nString\n\n\n\n\nThe custodian/contact of the api, should be a \n@yahoo-inc\n address. An ilist is preferred.\n\n\n[from \nProjectRequest\n]\n\n\n\n\n\n\ndescription\n\n\nString\n\n\n\n\nLong description of the api.\n\n\n[from \nProjectRequest\n]\n\n\n\n\n\n\nisOpenApi\n\n\nBool\n\n\n\n\nIndicate this document will be published or not. It can't be changed on update request.\n\n\n\n\n\n\n\n\n\n\n ProjectResponse\n\n\nThe project response object used in GET operation\n\n\nProjectResponse\n is a \nStruct\n type with the following fields:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nOptions\n\n\nDescription\n\n\nNotes\n\n\n\n\n\n\n\n\n\n\nid\n\n\nUUID\n\n\n\n\nSystem generated unique id.\n\n\n\n\n\n\n\n\nname\n\n\nString\n\n\n\n\nThe name of the project. As specified on project creation.\n\n\n\n\n\n\n\n\ncustodian\n\n\nString\n\n\n\n\nThe custodian of the project. As specified on project creation.\n\n\n\n\n\n\n\n\ndescription\n\n\nString\n\n\n\n\nThe description of the project. As specified on project creation.\n\n\n\n\n\n\n\n\nrepoUrl\n\n\nString\n\n\n\n\nThe repository of the project. As specified on project creation.\n\n\n\n\n\n\n\n\nrepoOrg\n\n\nString\n\n\n\n\nThe organization of the project repository, specified in \nrepoUrl\n on project creation.\n\n\n\n\n\n\n\n\nrepoName\n\n\nString\n\n\n\n\nThe name of the project repository, specified in \nrepoUrl\n on project creation.\n\n\n\n\n\n\n\n\nrepoBranch\n\n\nString\n\n\n\n\nThe branch of the project repository, specified in \nrepoUrl\n on project creation.\n\n\n\n\n\n\n\n\nrepoHeadSha\n\n\nString\n\n\n\n\nThe sha of the project repository.\n\n\n\n\n\n\n\n\ndocUrl\n\n\nString\n\n\n\n\nThe url to the document-hosting page, ex: https://git.corp.yahoo.com/pages/ApexHosting/project_cat/\n\n\n\n\n\n\n\n\nreviewUrl\n\n\nString\n\n\n\n\nThe url to the api review jive page, ex: https://yahoo.jiveon.com/thread/17141, as specified in the project config file.\n\n\n\n\n\n\n\n\nsplunkDashboardUrl\n\n\nString\n\n\n\n\nThe url to the api splunk dashboard, as specified in the project config file.\n\n\n\n\n\n\n\n\nyamasUrl\n\n\nString\n\n\n\n\nThe url to the yamas dashboard, as specified in the project config file.\n\n\n\n\n\n\n\n\ntestHostUrl\n\n\nString\n\n\n\n\nThe test host url, as specified in the project config file.\n\n\n\n\n\n\n\n\nwebHookId\n\n\nInt64\n\n\n\n\n\n\n\n\n\n\n\n\nstatus\n\n\nString\n\n\n\n\nThe status of the project.\n\n\n\n\n\n\n\n\nmessage\n\n\nString\n\n\n\n\nError messages if encounters document generation error\n\n\n\n\n\n\n\n\ndocGeneratedTs\n\n\nDateTime\n\n\n\n\nThe date time when the doc is generated.\n\n\n\n\n\n\n\n\nisOpenApi\n\n\nBool\n\n\n\n\nIndicate this document will be published or not\n\n\n\n\n\n\n\n\ncreatedTs\n\n\nDateTime\n\n\n\n\nThe date time when the project is created.\n\n\n\n\n\n\n\n\nupdateTs\n\n\nDateTime\n\n\n\n\nThe date time when the project is updated.\n\n\n\n\n\n\n\n\n\n\n ProjectResponseList\n\n\nA collection of \nProjectResponse\n\n\nProjectResponseList\n is a \nStruct\n type with the following fields:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nOptions\n\n\nDescription\n\n\nNotes\n\n\n\n\n\n\n\n\n\n\nprojects\n\n\nArray\nProjectResponse\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n NullResponse\n\n\nRepresents response when there is no content.\n\n\nNullResponse\n is a \nStruct\n with no specified fields\n\n\n PushEventRequestRepoInfo\n\n\nUsed only in PushEventRequest reference:\nhttps://developer.github.com/v3/activity/events/types/#pushevent\n\n\nPushEventRequestRepoInfo\n is a \nStruct\n type with the following fields:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nOptions\n\n\nDescription\n\n\nNotes\n\n\n\n\n\n\n\n\n\n\ndefault_branch\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n PushEventRequest\n\n\nRepresents the github webhook payload. Currently we only need these 2 fields.\n\n reference:\nhttps://developer.github.com/v3/activity/events/types/#pushevent\n\n\nPushEventRequest\n is a \nStruct\n type with the following fields:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nOptions\n\n\nDescription\n\n\nNotes\n\n\n\n\n\n\n\n\n\n\nref\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\nafter\n\n\nString\n\n\n\n\nThe latest sha\n\n\n\n\n\n\n\n\nrepository\n\n\nPushEventRequestRepoInfo\n\n\n\n\nrepository, need to get the default branch info\n\n\n\n\n\n\n\n\n\n\n SearchResponse\n\n\nSearchResponse\n is a \nStruct\n type with the following fields:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nOptions\n\n\nDescription\n\n\nNotes\n\n\n\n\n\n\n\n\n\n\nprojectId\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\nprojectName\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\nprojectDescription\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\nprojectDocUrl\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\nprojectRepoUrl\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\nsectionName\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\nsectionUrl\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\ncontent\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\ncustodian\n\n\nString\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n SearchResponseList\n\n\nSearchResponseList\n is a \nStruct\n type with the following fields:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nOptions\n\n\nDescription\n\n\nNotes\n\n\n\n\n\n\n\n\n\n\nsearchResponses\n\n\nArray\nSearchResponse\n\n\n\n\n\n\n\n\n\n\n\n\nresultsTotal\n\n\nInt32\n\n\n\n\n\n\n\n\n\n\n\n\nnextOffset\n\n\nInt32\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n PromotionCreateRequest\n\n\nPromotionCreateRequest\n is a \nStruct\n type with the following fields:\n\n\n\n\n\n\n\n\nName\n\n\nType\n\n\nOptions\n\n\nDescription\n\n\nNotes\n\n\n\n\n\n\n\n\n\n\ncmrId\n\n\nUUID\n\n\n\n\nthe cmr id.\n\n\n\n\n\n\n\n\n\n\nSwagger URL", 
+            "title": "apex"
+        }, 
+        {
+            "location": "/apex/#the-apex-api", 
+            "text": "APEX API  provides endpoints to onboard, update, delete a project and\nretrieve project(s) information. It also provides other operations to sync\nwith github or receive github events.      Terminology    * Project : A project is an API that is registered with APEX through the\nonboarding process.   This API has the following attributes:     Attribute  Value      namespace  com.yahoo.apex.parsec    version  1", 
+            "title": "The Apex API"
+        }, 
+        {
+            "location": "/apex/#resources", 
+            "text": "", 
+            "title": "Resources"
+        }, 
+        {
+            "location": "/apex/#searchresponselist", 
+            "text": "", 
+            "title": "SearchResponseList"
+        }, 
+        {
+            "location": "/apex/#get-search", 
+            "text": "", 
+            "title": "GET /search/"
+        }, 
+        {
+            "location": "/apex/#request-parameters", 
+            "text": "Name  Type  Source  Options  Description      query  String  query: q   query, separate by \",\" this naming follows http://yo/ecrest    sortBy  String  query: sortBy   sort search responses, which allows: projectName: projectName ascending -projectName: projectName descending (no value): default sorting    limit  String  query: limit   record limit in one response, default 10    offset  String  query: offset   page offset, nullable, default 0", 
+            "title": "Request parameters:"
+        }, 
+        {
+            "location": "/apex/#responses", 
+            "text": "Expected:     Code  Type      200 OK  SearchResponseList     Exception:     Code  Type  Comment      400 Bad Request  ResourceError     401 Unauthorized  ResourceError     500 Internal Server Error  ResourceError", 
+            "title": "Responses:"
+        }, 
+        {
+            "location": "/apex/#projectresponse", 
+            "text": "", 
+            "title": "ProjectResponse"
+        }, 
+        {
+            "location": "/apex/#post-projects", 
+            "text": "Get WSSID for an authentication in request's header   marked this following\n/wssids section because YBYCookieWSSIDIssuingServlet at DefaultWebListener\nhas already added this following mapping /apex/v1/wssids resource\nProjectResponseList GET \"/wssids\" { expected OK; exceptions { ResourceError\nINTERNAL_SERVER_ERROR; ResourceError BAD_REQUEST; ResourceError UNAUTHORIZED;\n} } Create/Onboard a project.   Please refer to   Sample\nRequest/Responses  sections for examples.", 
+            "title": "POST /projects/"
+        }, 
+        {
+            "location": "/apex/#request-parameters_1", 
+            "text": "Name  Type  Source  Options  Description      creationRequest  ProjectCreateRequest  body   Required request parameter.    wssid  String  header: X-YahooWSSID-Authorization      cookie  String  header: Cookie", 
+            "title": "Request parameters:"
+        }, 
+        {
+            "location": "/apex/#responses_1", 
+            "text": "Expected:     Code  Type      202 Accepted  ProjectResponse     Exception:     Code  Type  Comment      400 Bad Request  ResourceError     401 Unauthorized  ResourceError     403 Forbidden  ResourceError     409 Conflict  ResourceError     500 Internal Server Error  ResourceError", 
+            "title": "Responses:"
+        }, 
+        {
+            "location": "/apex/#put-projectsid", 
+            "text": "Edit/Modify a project.   Please refer to   Sample\nRequest/Responses  sections for examples.", 
+            "title": "PUT /projects/{id}"
+        }, 
+        {
+            "location": "/apex/#request-parameters_2", 
+            "text": "Name  Type  Source  Options  Description      id  UUID  path   The id of the project to edit.    project  ProjectRequest  body   The fields to edit.    wssid  String  header: X-YahooWSSID-Authorization      cookie  String  header: Cookie", 
+            "title": "Request parameters:"
+        }, 
+        {
+            "location": "/apex/#responses_2", 
+            "text": "Expected:     Code  Type      200 OK  ProjectResponse     Exception:     Code  Type  Comment      400 Bad Request  ResourceError     401 Unauthorized  ResourceError     403 Forbidden  ResourceError     404 Not Found  ResourceError     409 Conflict  ResourceError     500 Internal Server Error  ResourceError", 
+            "title": "Responses:"
+        }, 
+        {
+            "location": "/apex/#get-projectsid", 
+            "text": "Get the detail of the project with the given project id.   Please refer to Sample Request/Responses  sections for examples.", 
+            "title": "GET /projects/{id}"
+        }, 
+        {
+            "location": "/apex/#request-parameters_3", 
+            "text": "Name  Type  Source  Options  Description      id  UUID  path   The id of the project to retrieve details.", 
+            "title": "Request parameters:"
+        }, 
+        {
+            "location": "/apex/#responses_3", 
+            "text": "Expected:     Code  Type      200 OK  ProjectResponse     Exception:     Code  Type  Comment      400 Bad Request  ResourceError     401 Unauthorized  ResourceError     404 Not Found  ResourceError     500 Internal Server Error  ResourceError", 
+            "title": "Responses:"
+        }, 
+        {
+            "location": "/apex/#projectresponselist", 
+            "text": "", 
+            "title": "ProjectResponseList"
+        }, 
+        {
+            "location": "/apex/#get-projects", 
+            "text": "Get all projects.   Please refer to  Sample\nRequest/Responses  sections for examples.", 
+            "title": "GET /projects"
+        }, 
+        {
+            "location": "/apex/#responses_4", 
+            "text": "Expected:     Code  Type      200 OK  ProjectResponseList     Exception:     Code  Type  Comment      400 Bad Request  ResourceError     401 Unauthorized  ResourceError     500 Internal Server Error  ResourceError", 
+            "title": "Responses:"
+        }, 
+        {
+            "location": "/apex/#nullresponse", 
+            "text": "", 
+            "title": "NullResponse"
+        }, 
+        {
+            "location": "/apex/#delete-projectsid", 
+            "text": "Delete the project with the given project id.   Please refer to  Sample\nRequest/Responses  sections for examples.", 
+            "title": "DELETE /projects/{id}"
+        }, 
+        {
+            "location": "/apex/#request-parameters_4", 
+            "text": "Name  Type  Source  Options  Description      id  UUID  path   The id of the project to delete.    wssid  String  header: X-YahooWSSID-Authorization      cookie  String  header: Cookie", 
+            "title": "Request parameters:"
+        }, 
+        {
+            "location": "/apex/#responses_5", 
+            "text": "Expected:     Code  Type      204 No Content      Exception:     Code  Type  Comment      400 Bad Request  ResourceError     401 Unauthorized  ResourceError     404 Not Found  ResourceError     409 Conflict  ResourceError     500 Internal Server Error  ResourceError", 
+            "title": "Responses:"
+        }, 
+        {
+            "location": "/apex/#post-projectsidhookcallback", 
+            "text": "For github Webhook callback   When the request is for the event type we\ncan\u2019t support.   Currently we only support  push .", 
+            "title": "POST /projects/{id}/hookCallback"
+        }, 
+        {
+            "location": "/apex/#request-parameters_5", 
+            "text": "Name  Type  Source  Options  Description      id  UUID  path   The id of the project.    event  PushEventRequest  body   github webhook payload", 
+            "title": "Request parameters:"
+        }, 
+        {
+            "location": "/apex/#responses_6", 
+            "text": "Expected:     Code  Type      204 No Content      Exception:     Code  Type  Comment      401 Unauthorized  ResourceError     404 Not Found  ResourceError     409 Conflict  ResourceError     500 Internal Server Error  ResourceError     501 Not Implemented  ResourceError", 
+            "title": "Responses:"
+        }, 
+        {
+            "location": "/apex/#post-projectsidsync", 
+            "text": "Force Apex to sync with the project data on git.   Please refer to  Sample\nRequest/Responses  sections for examples.", 
+            "title": "POST /projects/{id}/sync"
+        }, 
+        {
+            "location": "/apex/#request-parameters_6", 
+            "text": "Name  Type  Source  Options  Description      id  UUID  path   The id of the project.    wssid  String  header: X-YahooWSSID-Authorization      cookie  String  header: Cookie", 
+            "title": "Request parameters:"
+        }, 
+        {
+            "location": "/apex/#responses_7", 
+            "text": "Expected:     Code  Type      204 No Content      Exception:     Code  Type  Comment      400 Bad Request  ResourceError     401 Unauthorized  ResourceError     404 Not Found  ResourceError     409 Conflict  ResourceError     500 Internal Server Error  ResourceError", 
+            "title": "Responses:"
+        }, 
+        {
+            "location": "/apex/#post-projectsidpromotion", 
+            "text": "", 
+            "title": "POST /projects/{id}/promotion"
+        }, 
+        {
+            "location": "/apex/#request-parameters_7", 
+            "text": "Name  Type  Source  Options  Description      id  UUID  path      request  PromotionCreateRequest  body      wssid  String  header: X-YahooWSSID-Authorization      cookie  String  header: Cookie", 
+            "title": "Request parameters:"
+        }, 
+        {
+            "location": "/apex/#responses_8", 
+            "text": "Expected:     Code  Type      204 No Content      Exception:     Code  Type  Comment      400 Bad Request  ResourceError     401 Unauthorized  ResourceError     403 Forbidden  ResourceError     404 Not Found  ResourceError     409 Conflict  ResourceError     500 Internal Server Error  ResourceError", 
+            "title": "Responses:"
+        }, 
+        {
+            "location": "/apex/#types", 
+            "text": "", 
+            "title": "Types"
+        }, 
+        {
+            "location": "/apex_reserved_swaggerui/", 
+            "text": "Swagger UI\n\n\n\n\napex", 
+            "title": "Swagger UI"
+        }, 
+        {
+            "location": "/apex_reserved_swaggerui/#swagger-ui", 
+            "text": "apex", 
+            "title": "Swagger UI"
+        }, 
+        {
+            "location": "/api/req_n_resp/", 
+            "text": "For API Spec, please refer to \nAPI Spec\n\n\nPOST /projects/\n\n\nRequest\n\n\n{\n    \nname\n: \nApex - The API Portal\n,\n    \ndescription\n:\nApex contains a set of guidelines, libraries and a protoal website. see https://yo/apex for details.\n, \n    \nrepoUrl\n:\ngit@git.corp.yahoo.com:apex/api.git#dogfood\n,\n    \ncustodian\n:\nec-lightyear-dev@yahoo-inc.com\n,\n    \nisOpenApi\n : true\n}\n\n\n\n\nResponses\n\n\nstatus 202\n\n\n{\n    \ncreatedTs\n: \n2017-03-28T09:00:14.135Z\n,\n    \ncustodian\n: \ndev-projcreateSuccess@yahoo-inc.com\n,\n    \ndescription\n: \nDescription: createSuccess\n,\n    \ndocUrl\n: \nhttps://git.corp.yahoo.com/pages/ApexHosting/Projec-createSuccess\n,\n    \nid\n: \n111\n,\n    \nname\n: \nName: createSuccess\n,\n    \nrepoBranch\n: \ndevBranch\n,\n    \nrepoName\n: \nTestRepo_createSuccess\n,\n    \nrepoOrg\n: \nTestOrg\n,\n    \nrepoUrl\n: \ngit@git.corp.yahoo.com:TestOrg/TestRepo_createSuccess.git#devBranch\n,\n    \nupdateTs\n: \n2017-03-28T09:00:14.135Z\n,\n    \nwebHookId\n: 0,\n    \nisOpenApi\n : true\n}\n\n\n\n\nPUT /projects/{id}\n\n\nRequest\n\n\n{\n    \nname\n: \nApex - The API Portal\n,\n    \ndescription\n:\nApex contains a set of guidelines, libraries and a protoal website. see https://yo/apex for details.\n, \n    \nrepoUrl\n:\ngit@git.corp.yahoo.com:apex/api.git#dogfood\n,\n    \ncustodian\n:\nec-lightyear-dev@yahoo-inc.com\n\n}\n\n\n\n\nResponses\n\n\nstatus 200\n\n\n{\n    \ncreatedTs\n: \n2017-03-28T09:19:01.855Z\n,\n     \ncustodian\n: \ndev-projupdateSuccess@yahoo-inc.com\n,\n     \ndescription\n: \nDescription: updateSuccess\n,\n     \ndocUrl\n: \nhttps://git.corp.yahoo.com/pages/ApexHosting/Projec-updateSuccess\n,\n     \nid\n: \nupdateSuccess\n,\n     \nname\n: \nName: updateSuccess\n,\n     \nrepoBranch\n: \ndevBranch\n,\n     \nrepoName\n: \nTestRepo_updateSuccess\n,\n     \nrepoOrg\n: \nTestOrg\n,\n     \nrepoUrl\n: \ngit@git.corp.yahoo.com:TestOrg/TestRepo_updateSuccess.git#devBranch\n,\n     \nupdateTs\n: \n2017-03-28T09:19:01.855Z\n,\n     \nwebHookId\n: 0,\n     \nisOpenApi\n : true\n}\n\n\n\n\nDELETE /projects/{id}\n\n\nResponses\n\n\nstatus 204\n\n\nNULL\n\n\nGET /projects/{id}\n\n\nResponses\n\n\nstatus 200\n\n\n{\n    \ncreatedTs\n: \n2017-04-07T02:19:32.01Z\n,\n    \ncustodian\n: \ndev-projgetSuccess@yahoo-inc.com\n,\n    \ndescription\n: \nDescription: getSuccess\n,\n    \ndocUrl\n: \nhttps://git.corp.yahoo.com/pages/ApexHosting/Projec-getSuccess\n,\n    \nid\n: 111,\n    \nname\n: \nName: getSuccess\n,\n    \nrepoBranch\n: \ndevBranch\n,\n    \nrepoName\n: \nTestRepo_getSuccess\n,\n    \nrepoOrg\n: \nTestOrg\n,\n    \nrepoUrl\n: \ngit@git.corp.yahoo.com:TestOrg/TestRepo_getSuccess.git#devBranch\n,\n    \nupdateTs\n: \n2017-04-07T02:19:32.01Z\n,\n    \nwebHookId\n: 0,\n    \nisOpenApi\n : true\n}\n\n\n\n\nGET /projects\n\n\nResponses\n\n\n{\n    \nprojectResponseList\n: [{\n        \ncreatedTs\n: \n2017-03-28T09:19:01.423Z\n,\n        \ncustodian\n: \ndev-projlist1@yahoo-inc.com\n,\n        \ndescription\n: \nDescription: list1\n,\n        \ndocUrl\n: \nhttps://git.corp.yahoo.com/pages/ApexHosting/Projec-list1\n,\n        \nid\n: 111,\n        \nname\n: \nName: list1\n,\n        \nrepoBranch\n: \ndevBranch\n,\n        \nrepoName\n: \nTestRepo_list1\n,\n        \nrepoOrg\n: \nTestOrg\n,\n        \nrepoUrl\n: \ngit@git.corp.yahoo.com:TestOrg/TestRepo_list1.git#devBranch\n,\n        \nupdateTs\n: \n2017-03-28T09:19:01.423Z\n,\n        \nwebHookId\n: 0,\n        \nisOpenApi\n : true\n    }, {\n        \ncreatedTs\n: \n2017-03-28T09:19:01.423Z\n,\n        \ncustodian\n: \ndev-projlist2@yahoo-inc.com\n,\n        \ndescription\n: \nDescription: list2\n,\n        \ndocUrl\n: \nhttps://git.corp.yahoo.com/pages/ApexHosting/Projec-list2\n,\n        \nid\n: 222,\n        \nname\n: \nName: list2\n,\n        \nrepoBranch\n: \ndevBranch\n,\n        \nrepoName\n: \nTestRepo_list2\n,\n        \nrepoOrg\n: \nTestOrg\n,\n        \nrepoUrl\n: \ngit@git.corp.yahoo.com:TestOrg/TestRepo_list2.git#devBranch\n,\n        \nupdateTs\n: \n2017-03-28T09:19:01.423Z\n,\n        \nwebHookId\n: 0,\n        \nisOpenApi\n : false\n    }, {\n        \ncreatedTs\n: \n2017-03-28T09:19:01.423Z\n,\n        \ncustodian\n: \ndev-projlist3@yahoo-inc.com\n,\n        \ndescription\n: \nDescription: list3\n,\n        \ndocUrl\n: \nhttps://git.corp.yahoo.com/pages/ApexHosting/Projec-list3\n,\n        \nid\n: 333,\n        \nname\n: \nName: list3\n,\n        \nrepoBranch\n: \ndevBranch\n,\n        \nrepoName\n: \nTestRepo_list3\n,\n        \nrepoOrg\n: \nTestOrg\n,\n        \nrepoUrl\n: \ngit@git.corp.yahoo.com:TestOrg/TestRepo_list3.git#devBranch\n,\n        \nupdateTs\n: \n2017-03-28T09:19:01.423Z\n,\n        \nwebHookId\n: 0,\n        \nisOpenApi\n : false\n    }]\n}\n\n\n\n\nPOST /projects/{id}/sync\n\n\nResponses\n\n\nstatus 204\n\n\nNULL\n\n\nPOST /projects/{id}/hookCallback\n\n\nRequest\n\n\n{\n  \nref\n:\nrefs/heads/master\n,\n  \nafter\n:\nc6ae2887c8dc6e466dd95f9788b56996cc83c55d\n\n}\n\n\n\n\n\nResponse\n\n\nstatus 204\n\n\nNULL\n\n\nError Responses\n\n\nMost of the error responses are in the following format, where \nerror.code\n and \nerror.message\n should provide some details on the root cause. \nPlease refer to \nError Codes\n for the complete list of error codes and possible remediation.\n\n\n{\n    \nerror\n: {\n        \ncode\n: 50001,\n        \nmessage\n: \nerror message\n\n    }\n}\n\n\n\n\nBelow are some examples categorized by HTTP Status code: \n\n\nstatus 400\n\n\n{\n    \nerror\n: {\n        \ncode\n: 0,\n            \ndetail\n: [{\n                \ntype\n: \nvalidationError\n,\n                \ninvalidValue\n: \n  \n,\n                \nmessage\n: \nmust match \\\n^[a-zA-Z0-9._%+-]+@yahoo-inc.com$\\\n,\n                \nmessageTemplate\n: \n{javax.validation.constraints.Pattern.message}\n,\n                \npath\n: \nApexResources.createProject.creationRequest.custodian\n\n            }, {\n                \ntype\n: \nvalidationError\n,\n                \ninvalidValue\n: \n  \n,\n                \nmessage\n: \nmust match \\\n^.*\\\\S.*$\\\n,\n                \nmessageTemplate\n: \n{javax.validation.constraints.Pattern.message}\n,\n                \npath\n: \nApexResources.createProject.creationRequest.name\n\n            }, {\n                \ntype\n: \nvalidationError\n,\n                \ninvalidValue\n: \n  \n,\n                \nmessage\n: \nmust match \\\n^.*\\\\S.*$\\\n,\n                \nmessageTemplate\n: \n{javax.validation.constraints.Pattern.message}\n,\n                \npath\n: \nApexResources.createProject.creationRequest.description\n\n            }, {\n                \ntype\n: \nvalidationError\n,\n                \ninvalidValue\n: \n  \n,\n                \nmessage\n: \nmust match \\\n^.*\\\\S.*$\\\n,\n                \nmessageTemplate\n: \n{javax.validation.constraints.Pattern.message}\n,\n                \npath\n: \nApexResources.createProject.creationRequest.repoUrl\n\n            }],\n            \nmessage\n: \nconstraint violation validate error\n\n    }\n}\n\n\n\n\nstatus 401\n\n\nTBD\n\n\nstatus 403\n\n\nTBD\n\n\nstatus 404\n\n\n{\n    \nerror\n: {\n        \ncode\n: 40400,\n        \nmessage\n: \nUnable to find project with the given id. [getFailNotFound]\n\n    }\n}\n\n\n\n\nstatus 409\n\n\n{\n    \nerror\n: {\n        \ncode\n: 40901,\n        \nmessage\n: \nA project with the same repository url already exists.\n\n    }\n}\n\n\n\n\nstatus 500\n\n\n{\n    \nerror\n: {\n        \ncode\n: 50001,\n        \nmessage\n: \nUnable to create project with the given repo. [git@git.corp.yahoo.com:TestOrg/TestRepo_333.git#devBranch]\n\n    }\n}", 
+            "title": "Sample Requests & Responses"
+        }, 
+        {
+            "location": "/api/req_n_resp/#post-projects", 
+            "text": "", 
+            "title": "POST /projects/"
+        }, 
+        {
+            "location": "/api/req_n_resp/#request", 
+            "text": "{\n     name :  Apex - The API Portal ,\n     description : Apex contains a set of guidelines, libraries and a protoal website. see https://yo/apex for details. , \n     repoUrl : git@git.corp.yahoo.com:apex/api.git#dogfood ,\n     custodian : ec-lightyear-dev@yahoo-inc.com ,\n     isOpenApi  : true\n}", 
+            "title": "Request"
+        }, 
+        {
+            "location": "/api/req_n_resp/#responses", 
+            "text": "", 
+            "title": "Responses"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-202", 
+            "text": "{\n     createdTs :  2017-03-28T09:00:14.135Z ,\n     custodian :  dev-projcreateSuccess@yahoo-inc.com ,\n     description :  Description: createSuccess ,\n     docUrl :  https://git.corp.yahoo.com/pages/ApexHosting/Projec-createSuccess ,\n     id :  111 ,\n     name :  Name: createSuccess ,\n     repoBranch :  devBranch ,\n     repoName :  TestRepo_createSuccess ,\n     repoOrg :  TestOrg ,\n     repoUrl :  git@git.corp.yahoo.com:TestOrg/TestRepo_createSuccess.git#devBranch ,\n     updateTs :  2017-03-28T09:00:14.135Z ,\n     webHookId : 0,\n     isOpenApi  : true\n}", 
+            "title": "status 202"
+        }, 
+        {
+            "location": "/api/req_n_resp/#put-projectsid", 
+            "text": "", 
+            "title": "PUT /projects/{id}"
+        }, 
+        {
+            "location": "/api/req_n_resp/#request_1", 
+            "text": "{\n     name :  Apex - The API Portal ,\n     description : Apex contains a set of guidelines, libraries and a protoal website. see https://yo/apex for details. , \n     repoUrl : git@git.corp.yahoo.com:apex/api.git#dogfood ,\n     custodian : ec-lightyear-dev@yahoo-inc.com \n}", 
+            "title": "Request"
+        }, 
+        {
+            "location": "/api/req_n_resp/#responses_1", 
+            "text": "", 
+            "title": "Responses"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-200", 
+            "text": "{\n     createdTs :  2017-03-28T09:19:01.855Z ,\n      custodian :  dev-projupdateSuccess@yahoo-inc.com ,\n      description :  Description: updateSuccess ,\n      docUrl :  https://git.corp.yahoo.com/pages/ApexHosting/Projec-updateSuccess ,\n      id :  updateSuccess ,\n      name :  Name: updateSuccess ,\n      repoBranch :  devBranch ,\n      repoName :  TestRepo_updateSuccess ,\n      repoOrg :  TestOrg ,\n      repoUrl :  git@git.corp.yahoo.com:TestOrg/TestRepo_updateSuccess.git#devBranch ,\n      updateTs :  2017-03-28T09:19:01.855Z ,\n      webHookId : 0,\n      isOpenApi  : true\n}", 
+            "title": "status 200"
+        }, 
+        {
+            "location": "/api/req_n_resp/#delete-projectsid", 
+            "text": "", 
+            "title": "DELETE /projects/{id}"
+        }, 
+        {
+            "location": "/api/req_n_resp/#responses_2", 
+            "text": "", 
+            "title": "Responses"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-204", 
+            "text": "NULL", 
+            "title": "status 204"
+        }, 
+        {
+            "location": "/api/req_n_resp/#get-projectsid", 
+            "text": "", 
+            "title": "GET /projects/{id}"
+        }, 
+        {
+            "location": "/api/req_n_resp/#responses_3", 
+            "text": "", 
+            "title": "Responses"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-200_1", 
+            "text": "{\n     createdTs :  2017-04-07T02:19:32.01Z ,\n     custodian :  dev-projgetSuccess@yahoo-inc.com ,\n     description :  Description: getSuccess ,\n     docUrl :  https://git.corp.yahoo.com/pages/ApexHosting/Projec-getSuccess ,\n     id : 111,\n     name :  Name: getSuccess ,\n     repoBranch :  devBranch ,\n     repoName :  TestRepo_getSuccess ,\n     repoOrg :  TestOrg ,\n     repoUrl :  git@git.corp.yahoo.com:TestOrg/TestRepo_getSuccess.git#devBranch ,\n     updateTs :  2017-04-07T02:19:32.01Z ,\n     webHookId : 0,\n     isOpenApi  : true\n}", 
+            "title": "status 200"
+        }, 
+        {
+            "location": "/api/req_n_resp/#get-projects", 
+            "text": "", 
+            "title": "GET /projects"
+        }, 
+        {
+            "location": "/api/req_n_resp/#responses_4", 
+            "text": "{\n     projectResponseList : [{\n         createdTs :  2017-03-28T09:19:01.423Z ,\n         custodian :  dev-projlist1@yahoo-inc.com ,\n         description :  Description: list1 ,\n         docUrl :  https://git.corp.yahoo.com/pages/ApexHosting/Projec-list1 ,\n         id : 111,\n         name :  Name: list1 ,\n         repoBranch :  devBranch ,\n         repoName :  TestRepo_list1 ,\n         repoOrg :  TestOrg ,\n         repoUrl :  git@git.corp.yahoo.com:TestOrg/TestRepo_list1.git#devBranch ,\n         updateTs :  2017-03-28T09:19:01.423Z ,\n         webHookId : 0,\n         isOpenApi  : true\n    }, {\n         createdTs :  2017-03-28T09:19:01.423Z ,\n         custodian :  dev-projlist2@yahoo-inc.com ,\n         description :  Description: list2 ,\n         docUrl :  https://git.corp.yahoo.com/pages/ApexHosting/Projec-list2 ,\n         id : 222,\n         name :  Name: list2 ,\n         repoBranch :  devBranch ,\n         repoName :  TestRepo_list2 ,\n         repoOrg :  TestOrg ,\n         repoUrl :  git@git.corp.yahoo.com:TestOrg/TestRepo_list2.git#devBranch ,\n         updateTs :  2017-03-28T09:19:01.423Z ,\n         webHookId : 0,\n         isOpenApi  : false\n    }, {\n         createdTs :  2017-03-28T09:19:01.423Z ,\n         custodian :  dev-projlist3@yahoo-inc.com ,\n         description :  Description: list3 ,\n         docUrl :  https://git.corp.yahoo.com/pages/ApexHosting/Projec-list3 ,\n         id : 333,\n         name :  Name: list3 ,\n         repoBranch :  devBranch ,\n         repoName :  TestRepo_list3 ,\n         repoOrg :  TestOrg ,\n         repoUrl :  git@git.corp.yahoo.com:TestOrg/TestRepo_list3.git#devBranch ,\n         updateTs :  2017-03-28T09:19:01.423Z ,\n         webHookId : 0,\n         isOpenApi  : false\n    }]\n}", 
+            "title": "Responses"
+        }, 
+        {
+            "location": "/api/req_n_resp/#post-projectsidsync", 
+            "text": "", 
+            "title": "POST /projects/{id}/sync"
+        }, 
+        {
+            "location": "/api/req_n_resp/#responses_5", 
+            "text": "", 
+            "title": "Responses"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-204_1", 
+            "text": "NULL", 
+            "title": "status 204"
+        }, 
+        {
+            "location": "/api/req_n_resp/#post-projectsidhookcallback", 
+            "text": "", 
+            "title": "POST /projects/{id}/hookCallback"
+        }, 
+        {
+            "location": "/api/req_n_resp/#request_2", 
+            "text": "{\n   ref : refs/heads/master ,\n   after : c6ae2887c8dc6e466dd95f9788b56996cc83c55d \n}", 
+            "title": "Request"
+        }, 
+        {
+            "location": "/api/req_n_resp/#response", 
+            "text": "", 
+            "title": "Response"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-204_2", 
+            "text": "NULL", 
+            "title": "status 204"
+        }, 
+        {
+            "location": "/api/req_n_resp/#error-responses", 
+            "text": "Most of the error responses are in the following format, where  error.code  and  error.message  should provide some details on the root cause. \nPlease refer to  Error Codes  for the complete list of error codes and possible remediation.  {\n     error : {\n         code : 50001,\n         message :  error message \n    }\n}  Below are some examples categorized by HTTP Status code:", 
+            "title": "Error Responses"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-400", 
+            "text": "{\n     error : {\n         code : 0,\n             detail : [{\n                 type :  validationError ,\n                 invalidValue :     ,\n                 message :  must match \\ ^[a-zA-Z0-9._%+-]+@yahoo-inc.com$\\ ,\n                 messageTemplate :  {javax.validation.constraints.Pattern.message} ,\n                 path :  ApexResources.createProject.creationRequest.custodian \n            }, {\n                 type :  validationError ,\n                 invalidValue :     ,\n                 message :  must match \\ ^.*\\\\S.*$\\ ,\n                 messageTemplate :  {javax.validation.constraints.Pattern.message} ,\n                 path :  ApexResources.createProject.creationRequest.name \n            }, {\n                 type :  validationError ,\n                 invalidValue :     ,\n                 message :  must match \\ ^.*\\\\S.*$\\ ,\n                 messageTemplate :  {javax.validation.constraints.Pattern.message} ,\n                 path :  ApexResources.createProject.creationRequest.description \n            }, {\n                 type :  validationError ,\n                 invalidValue :     ,\n                 message :  must match \\ ^.*\\\\S.*$\\ ,\n                 messageTemplate :  {javax.validation.constraints.Pattern.message} ,\n                 path :  ApexResources.createProject.creationRequest.repoUrl \n            }],\n             message :  constraint violation validate error \n    }\n}", 
+            "title": "status 400"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-401", 
+            "text": "TBD", 
+            "title": "status 401"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-403", 
+            "text": "TBD", 
+            "title": "status 403"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-404", 
+            "text": "{\n     error : {\n         code : 40400,\n         message :  Unable to find project with the given id. [getFailNotFound] \n    }\n}", 
+            "title": "status 404"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-409", 
+            "text": "{\n     error : {\n         code : 40901,\n         message :  A project with the same repository url already exists. \n    }\n}", 
+            "title": "status 409"
+        }, 
+        {
+            "location": "/api/req_n_resp/#status-500", 
+            "text": "{\n     error : {\n         code : 50001,\n         message :  Unable to create project with the given repo. [git@git.corp.yahoo.com:TestOrg/TestRepo_333.git#devBranch] \n    }\n}", 
+            "title": "status 500"
+        }, 
+        {
+            "location": "/api/error/", 
+            "text": "Error Codes\n\n\n\n\n\n\n\n\nError Code\n\n\nDescription\n\n\nAction to Take\n\n\n\n\n\n\n\n\n\n\n40000\n\n\napex.conf\n is not valid\n\n\nRefer to \nGetting Started\n and provide a valid \napex.conf\n\n\n\n\n\n\n40001\n\n\napex.conf\n is not found\n\n\nRefer to \nGetting Started\n and provide a valid \napex.conf\n\n\n\n\n\n\n40002\n\n\napex.conf\n is not valid: required field \nversion\n is not found.\n\n\nRefer to \nGetting Started Guide\n and provide a valid \napex.conf\n\n\n\n\n\n\n40003\n\n\napex.conf\n is not valid: required field \nlayout\n is not found.\n\n\nRefer to \nGetting Started Guide\n and provide a valid \napex.conf\n\n\n\n\n\n\n40004\n\n\napex.conf\n is not valid: required field \nttile\n is not found.\n\n\nRefer to \nGetting Started Guide\n and provide a valid \napex.conf\n\n\n\n\n\n\n40005\n\n\nGit repository url is not valid.\n\n\nThe repository url should be in the format of \ngit@git.corp.yahoo.com:${orgname}/${reponame}.git#${branchName}\n\n\n\n\n\n\n40400\n\n\nProject with given id is not found.\n\n\nMake sure the project is in the system.\n\n\n\n\n\n\n50000\n\n\nUncategorizable system error.\n\n\nPlease contact \nApex Team\n.\n\n\n\n\n\n\n50001\n\n\nEncountered an error with git.\n\n\nPlease make sure you've grant \nby-apex\n user proper permission as described in \nGetting Started Guide\n. Or contact \nApex Team\n if the issue persists.\n\n\n\n\n\n\n50002\n\n\nEncountered an error with git.\n\n\nPlease make sure you've grant \nby-apex\n user proper permission as described in \nGetting Started Guide\n. Or contact \nApex Team\n if the issue persists.\n\n\n\n\n\n\n50003\n\n\nSystem error.\n\n\nPlease contact \nApex Team\n.\n\n\n\n\n\n\n50004\n\n\nSystem error.\n\n\nPlease contact \nApex Team\n.\n\n\n\n\n\n\n50005\n\n\nSystem error.\n\n\nPlease contact \nApex Team\n.\n\n\n\n\n\n\n50006\n\n\nSystem error.\n\n\nPlease contact \nApex Team\n.\n\n\n\n\n\n\n50400\n\n\nSystem error.\n\n\nPlease contact \nApex Team\n.\n\n\n\n\n\n\n50501\n\n\nSystem error.\n\n\nPlease contact \nApex Team\n.\n\n\n\n\n\n\n50099\n\n\nSystem error.\n\n\nPlease contact \nApex Team\n.", 
+            "title": "Error Codes"
+        }, 
+        {
+            "location": "/api/error/#error-codes", 
+            "text": "Error Code  Description  Action to Take      40000  apex.conf  is not valid  Refer to  Getting Started  and provide a valid  apex.conf    40001  apex.conf  is not found  Refer to  Getting Started  and provide a valid  apex.conf    40002  apex.conf  is not valid: required field  version  is not found.  Refer to  Getting Started Guide  and provide a valid  apex.conf    40003  apex.conf  is not valid: required field  layout  is not found.  Refer to  Getting Started Guide  and provide a valid  apex.conf    40004  apex.conf  is not valid: required field  ttile  is not found.  Refer to  Getting Started Guide  and provide a valid  apex.conf    40005  Git repository url is not valid.  The repository url should be in the format of  git@git.corp.yahoo.com:${orgname}/${reponame}.git#${branchName}    40400  Project with given id is not found.  Make sure the project is in the system.    50000  Uncategorizable system error.  Please contact  Apex Team .    50001  Encountered an error with git.  Please make sure you've grant  by-apex  user proper permission as described in  Getting Started Guide . Or contact  Apex Team  if the issue persists.    50002  Encountered an error with git.  Please make sure you've grant  by-apex  user proper permission as described in  Getting Started Guide . Or contact  Apex Team  if the issue persists.    50003  System error.  Please contact  Apex Team .    50004  System error.  Please contact  Apex Team .    50005  System error.  Please contact  Apex Team .    50006  System error.  Please contact  Apex Team .    50400  System error.  Please contact  Apex Team .    50501  System error.  Please contact  Apex Team .    50099  System error.  Please contact  Apex Team .", 
+            "title": "Error Codes"
+        }, 
+        {
+            "location": "/faq/", 
+            "text": "How do I get more info?\n\n\n\n\nPlease follow us on \nApex Jive Group\n and subscribe to apex users mailing list: \napex-users@yahoo-inc.com\n to get the latest information and updates on Apex.\n\n\nIf you have any feedback, please email us: ec-lightyear-dev@yahoo-inc.com\n\n\n\n\nHow do I submit feature requests or issues?\n\n\n\n\nPlease submit a \nJira Request\n.", 
+            "title": "FAQ"
+        }, 
+        {
+            "location": "/faq/#how-do-i-get-more-info", 
+            "text": "Please follow us on  Apex Jive Group  and subscribe to apex users mailing list:  apex-users@yahoo-inc.com  to get the latest information and updates on Apex.  If you have any feedback, please email us: ec-lightyear-dev@yahoo-inc.com", 
+            "title": "How do I get more info?"
+        }, 
+        {
+            "location": "/faq/#how-do-i-submit-feature-requests-or-issues", 
+            "text": "Please submit a  Jira Request .", 
+            "title": "How do I submit feature requests or issues?"
+        }
+    ]
+}

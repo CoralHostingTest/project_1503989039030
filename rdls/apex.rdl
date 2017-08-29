@@ -1,0 +1,380 @@
+//
+// **APEX API** provides endpoints to onboard, update, delete a project and retrieve project(s) information.
+// It also provides other operations to sync with github or receive github events.
+// <br/> <br/>
+// ***Terminology*** <br/>
+// * **Project**: A project is an API that is registered with APEX through the onboarding process. <br/>
+//
+namespace com.yahoo.apex.parsec;
+name apex;
+version 1;
+
+
+//
+// DateTime string that follows ISO 8601 UTC format, e.g.2013-03-06T11:00:00Z
+//
+type DateTime String (x_date_time)
+
+//
+//The request parameter used in project onboarding/creation and update. <br/><br/>
+//- Each and every field are required for creation (not null), and can not be blank. <br/>
+//- The fields are allowed to be null on update but not blank. If the field value is null for update, the field will be kept unchanged. <br/>
+//- Please refer to  [Sample Request/Responses](/api/req_n_resp.md) sections for examples. <br/>
+//- **Implementation note**: Regex is used to verify the input is not blank and escape '\\' twice for rdl & java
+//
+type ProjectRequest struct {
+    //The ssh url to the repository where the RDL source and documents resides. <br/>
+    //Should be in the format of `git@git.corp.yahoo.com:${orgname}/${reponame}.git#${branchName}`
+    String repoUrl      (x_not_null="groups=create", x_size="max=256,groups=create|update", x_pattern="regexp=\"^.*\\\\S.*$\", groups=create|update");
+
+    //The name of the api.
+    String name         (x_not_null="groups=create", x_size="max=256,groups=create|update", x_pattern="regexp=\"^.*\\\\S.*$\", groups=create|update");
+
+    //The custodian/contact of the api, should be a `@yahoo-inc` address. An ilist is preferred.
+    String custodian    (x_not_null="groups=create", x_size="max=256,groups=create|update", x_pattern="regexp=\"^[a-zA-Z0-9._%+-]+@yahoo-inc.com$\", groups=create|update");
+
+    //Long description of the api.
+    String description  (x_not_null="groups=create", x_size="max=512,groups=create|update", x_pattern="regexp=\"^.*\\\\S.*$\", groups=create|update");
+}
+
+type ProjectCreateRequest ProjectRequest {
+    //Indicate this document will be published or not. It can't be changed on update request.
+    Bool isOpenApi
+}
+
+//
+// The project response object used in GET operation
+//
+type ProjectResponse struct {
+    //System generated unique id.
+    UUID id;
+
+    //The name of the project. As specified on project creation.
+    String name;
+
+    //The custodian of the project. As specified on project creation.
+    String custodian;
+
+    //The description of the project. As specified on project creation.
+    String description;
+
+    //The repository of the project. As specified on project creation.
+    String repoUrl;
+
+    //The organization of the project repository, specified in `repoUrl` on project creation.
+    String repoOrg;
+
+    //The name of the project repository, specified in `repoUrl` on project creation.
+    String repoName;
+
+    //The branch of the project repository, specified in `repoUrl` on project creation.
+    String repoBranch;
+
+    //The sha of the project repository.
+    String repoHeadSha;
+
+    //The url to the document-hosting page, ex: https://git.corp.yahoo.com/pages/ApexHosting/project_cat/
+    String docUrl;
+
+    //The url to the api review jive page, ex: https://yahoo.jiveon.com/thread/17141, as specified in the project config file.
+    String reviewUrl;
+
+    //The url to the api splunk dashboard, as specified in the project config file.
+    String splunkDashboardUrl;
+
+    //The url to the yamas dashboard, as specified in the project config file.
+    String yamasUrl;
+
+    //The test host url, as specified in the project config file.
+    String testHostUrl;
+    Int64 webHookId;
+
+    //The status of the project.
+    String status;
+
+    //Error messages if encounters document generation error
+    String message;
+
+    //The date time when the doc is generated.
+    DateTime docGeneratedTs;
+
+    //Indicate this document will be published or not
+    Bool isOpenApi;
+
+    //The date time when the project is created.
+    DateTime createdTs;
+
+    //The date time when the project is updated.
+    DateTime updateTs;
+}
+
+//
+// A collection of [ProjectResponse](#projectresponse)
+//
+type ProjectResponseList struct {
+    array<ProjectResponse> projects;
+}
+
+//
+// Represents response when there is no content.
+//
+type NullResponse struct {
+}
+
+
+// Used only in PushEventRequest
+// reference: https://developer.github.com/v3/activity/events/types/#pushevent
+type PushEventRequestRepoInfo struct {
+    String default_branch;
+}
+
+//
+// Represents the github webhook payload. Currently we only need these 2 fields. <br/>
+// reference: https://developer.github.com/v3/activity/events/types/#pushevent
+type PushEventRequest struct {
+    String ref;
+
+    //The latest sha
+    String after;
+
+    //repository, need to get the default branch info
+    PushEventRequestRepoInfo repository;
+}
+
+//
+// Get WSSID for an authentication in request's header <br/>
+// marked this following /wssids section because YBYCookieWSSIDIssuingServlet at DefaultWebListener has already added this following mapping /apex/v1/wssids
+//
+//resource ProjectResponseList GET "/wssids" {
+//    expected OK;
+//    exceptions {
+//        ResourceError INTERNAL_SERVER_ERROR;
+//        ResourceError BAD_REQUEST;
+//        ResourceError UNAUTHORIZED;
+//    }
+//}
+
+//
+// Create/Onboard a project. <br/>
+// Please refer to  [Sample Request/Responses](/api/req_n_resp.md) sections for examples.
+//
+resource ProjectResponse POST "/projects/" (name=createProject) {
+    //Required request parameter.
+    ProjectCreateRequest creationRequest (x_must_validate="create");
+
+    //also require WSSID and YBYcookie for an authentication in request's header
+    authenticate;
+    String wssid (header="X-YahooWSSID-Authorization");
+    String cookie (header="Cookie");
+
+    expected ACCEPTED;
+
+    exceptions {
+        ResourceError INTERNAL_SERVER_ERROR;
+        ResourceError BAD_REQUEST;
+        ResourceError CONFLICT;
+        ResourceError UNAUTHORIZED;
+        ResourceError FORBIDDEN;
+    }
+}
+
+//
+// Edit/Modify a project. <br/>
+// Please refer to  [Sample Request/Responses](/api/req_n_resp.md) sections for examples.
+//
+resource ProjectResponse PUT "/projects/{id}" (name=updateProject) {
+    //The id of the project to edit.
+    UUID id;
+
+    //The fields to edit.
+    ProjectRequest project (x_must_validate="update");
+
+    //also require WSSID and YBYcookie for an authentication in request's header
+    authenticate;
+    String wssid (header="X-YahooWSSID-Authorization");
+    String cookie (header="Cookie");
+
+    expected OK;
+    exceptions {
+        ResourceError INTERNAL_SERVER_ERROR;
+        ResourceError BAD_REQUEST;
+        ResourceError CONFLICT;
+        ResourceError UNAUTHORIZED;
+        ResourceError FORBIDDEN;
+        ResourceError NOT_FOUND;
+    }
+}
+
+
+//
+// Get the detail of the project with the given project id. <br/>
+// Please refer to [Sample Request/Responses](/api/req_n_resp.md) sections for examples.
+//
+resource ProjectResponse GET "/projects/{id}" {
+    //The id of the project to retrieve details.
+    UUID id;
+
+    expected OK;
+    exceptions {
+        ResourceError INTERNAL_SERVER_ERROR;
+        ResourceError BAD_REQUEST;
+        ResourceError UNAUTHORIZED;
+        ResourceError NOT_FOUND;
+    }
+}
+
+//
+// Get all projects. <br/>
+// Please refer to [Sample Request/Responses](/api/req_n_resp.md) sections for examples.
+//
+resource ProjectResponseList GET "/projects" {
+    expected OK;
+    exceptions {
+        ResourceError INTERNAL_SERVER_ERROR;
+        ResourceError BAD_REQUEST;
+        ResourceError UNAUTHORIZED;
+    }
+}
+
+//
+// Delete the project with the given project id. <br/>
+// Please refer to [Sample Request/Responses](/api/req_n_resp.md) sections for examples.
+//
+resource NullResponse DELETE "/projects/{id}" (name=deleteProject) {
+    //The id of the project to delete.
+    UUID id;
+
+    //also require WSSID and YBYcookie for an authentication in request's header
+    authenticate;
+    String wssid (header="X-YahooWSSID-Authorization");
+    String cookie (header="Cookie");
+
+    expected NO_CONTENT;
+    exceptions {
+        ResourceError INTERNAL_SERVER_ERROR;
+        ResourceError BAD_REQUEST;
+        ResourceError UNAUTHORIZED;
+        ResourceError NOT_FOUND;
+        ResourceError CONFLICT;
+    }
+}
+
+//
+// For github Webhook callback <br/>
+//
+resource NullResponse POST "/projects/{id}/hookCallback" (name=receiveProjectEvent) {
+    //The id of the project.
+    UUID id;
+
+    //github webhook payload
+    PushEventRequest event;
+
+    authenticate;
+
+    expected NO_CONTENT;
+    exceptions {
+        ResourceError INTERNAL_SERVER_ERROR;
+
+        //When the request is for the event type we can’t support. <br/>
+        //Currently we only support `push`.
+        ResourceError NOT_IMPLEMENTED;
+        ResourceError UNAUTHORIZED;
+        ResourceError NOT_FOUND;
+        ResourceError CONFLICT;
+    }
+}
+
+//
+// Force Apex to sync with the project data on git. <br/>
+// Please refer to [Sample Request/Responses](/api/req_n_resp.md) sections for examples.
+//
+resource NullResponse POST "/projects/{id}/sync" (name=syncProject) {
+
+    //The id of the project.
+    UUID id;
+
+    //also require WSSID and YBYcookie for an authentication in request's header
+    authenticate;
+    String wssid (header="X-YahooWSSID-Authorization");
+    String cookie (header="Cookie");
+
+    expected NO_CONTENT;
+    exceptions {
+        ResourceError INTERNAL_SERVER_ERROR;
+        ResourceError CONFLICT;
+        ResourceError BAD_REQUEST;
+        ResourceError UNAUTHORIZED;
+        ResourceError NOT_FOUND;
+    }
+}
+
+
+type SearchResponse struct {
+    String projectId;
+    String projectName;
+    String projectDescription;
+    String projectDocUrl;
+    String projectRepoUrl;
+    String sectionName;
+    String sectionUrl;
+    String content;
+    String custodian;
+}
+
+type SearchResponseList struct {
+    array<SearchResponse> searchResponses;
+    int32 resultsTotal;
+    int32 nextOffset;
+}
+
+resource SearchResponseList GET "/search/?q={query}&sortBy={sortBy}&limit={limit}&offset={offset}" (name=search) {
+    //query, separate by ","
+    //this naming follows http://yo/ecrest
+    String query (x_not_null);
+
+    //sort search responses, which allows:
+    //  projectName: projectName ascending
+    //  -projectName: projectName descending
+    //  (no value): default sorting
+    String sortBy (x_pattern="regexp=\"projectName|-projectName|\"");
+
+    //record limit in one response, default 10
+    String limit;
+
+    //page offset, nullable, default 0
+    String offset;
+
+    authenticate;
+
+    expected OK;
+    exceptions {
+        ResourceError INTERNAL_SERVER_ERROR;
+        ResourceError BAD_REQUEST;
+        ResourceError UNAUTHORIZED;
+    }
+}
+
+type PromotionCreateRequest struct {
+    //the cmr id.
+    UUID cmrId (x_not_null="groups=create")
+}
+
+resource NullResponse POST "/projects/{id}/promotion" (name=createPromotion) {
+    UUID id;
+    PromotionCreateRequest request (x_must_validate="update");
+
+    //also require WSSID and YBYcookie for an authentication in request's header
+    authenticate;
+    String wssid (header="X-YahooWSSID-Authorization");
+    String cookie (header="Cookie");
+
+    expected NO_CONTENT;
+    exceptions {
+        ResourceError INTERNAL_SERVER_ERROR;
+        ResourceError BAD_REQUEST;
+        ResourceError CONFLICT;
+        ResourceError UNAUTHORIZED;
+        ResourceError FORBIDDEN;
+        ResourceError NOT_FOUND;
+    }
+}
